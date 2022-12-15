@@ -1,0 +1,28 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@redux-devtools/extension": "^3.2.3",
+    "axios": "^1.2.0",
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.4",
+    "formik": "^2.2.9",
+    "next": "13.0.4",
+    "next-redux-wrapper": "^8.0.0",
+    "react": "18.2.0",
+    "react-bootstrap": "^2.6.0",
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.5",
+    "react-toastify": "^9.1.1",
+    "redux": "^4.2.0",
+    "redux-thunk": "^2.4.2",
+    "yup": "^0.32.11"
+  }
+}
