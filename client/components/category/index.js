@@ -8,6 +8,7 @@ import Loader from '../utilities/Loader';
 import {
   listCategoriesHandler,
   resetNotifications,
+  deleteCategoryHandler,
 } from '../../redux/actions/category';
 import { convertMultipleWords } from '../../utils/string';
 import Paginate from '../utilities/Paginate';
@@ -20,38 +21,32 @@ const CategoryList = () => {
     (state) => state.categoryList
   );
 
-  // const {
-  //   loading: loadingDelete,
-  //   success,
-  //   error: errorDelete,
-  //   message,
-  // } = useSelector((state) => state.currencyDelete);
+  const {
+    loading: loadingDelete,
+    success,
+    error: errorDelete,
+    message,
+  } = useSelector((state) => state.categoryDelete);
 
   useEffect(() => {
     dispatch(listCategoriesHandler('select=name,productsCount&limit=10', ''));
-  }, [dispatch]);
+  }, [dispatch, errorDelete, success]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorDelete) {
+      toast.error(error || errorDelete);
       dispatch(resetNotifications());
     }
   }, [error, dispatch]);
 
-  // useEffect(() => {
-  //   if (success) {
-  //     toast.success(message);
-  //     dispatch(resetNotifications());
-  //     dispatch(
-  //       listCategoriesHandler(
-  //         'select=name,productsCount&limit=10',
-  //         ''
-  //       )
-  //     );
-  //   }
-  // }, [success, dispatch]);
+  useEffect(() => {
+    if (success) {
+      toast.success(message);
+      dispatch(resetNotifications());
+    }
+  }, [success, dispatch]);
 
-  if (loading) {
+  if (loading || loadingDelete) {
     return <Loader />;
   }
 
@@ -71,8 +66,7 @@ const CategoryList = () => {
         'Etes vous sur(e) de vouloir supprimer cette categorie ? Cette action peut occasionner un dysfonctionnement du site.'
       )
     ) {
-      // dispatch(deleteCurrencyHandler(id));
-      console.log(id);
+      dispatch(deleteCategoryHandler(id));
     }
   }
 
