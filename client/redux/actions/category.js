@@ -4,6 +4,9 @@ import {
   CATEGORY_CREATE_FAILED,
   CATEGORY_CREATE_REQUEST,
   CATEGORY_CREATE_SUCCESS,
+  CATEGORY_DELETE_FAILED,
+  CATEGORY_DELETE_REQUEST,
+  CATEGORY_DELETE_SUCCESS,
   CATEGORY_DETAIL_FAILED,
   CATEGORY_DETAIL_REQUEST,
   CATEGORY_DETAIL_SUCCESS,
@@ -121,6 +124,29 @@ export const updateCategoryHandler = (id, category) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CATEGORY_UPDATE_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// delete category action
+export const deleteCategoryHandler = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: CATEGORY_DELETE_REQUEST });
+
+    await axios.delete(`${SERVER_API}/categories/${id}`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: CATEGORY_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: CATEGORY_DELETE_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error

@@ -41,6 +41,7 @@ import {
   categoryCreateReducer,
   categoryDetailReducer,
   categoryUpdateReducer,
+  categoryDeleteReducer,
 } from './category';
 
 const reducers = combineReducers({
@@ -71,6 +72,7 @@ const reducers = combineReducers({
   categoryCreate: categoryCreateReducer,
   categoryDetail: categoryDetailReducer,
   categoryUpdate: categoryUpdateReducer,
+  categoryDelete: categoryDeleteReducer,
 });
 
 export default reducers;

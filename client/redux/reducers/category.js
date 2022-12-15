@@ -2,6 +2,9 @@ import {
   CATEGORY_CREATE_FAILED,
   CATEGORY_CREATE_REQUEST,
   CATEGORY_CREATE_SUCCESS,
+  CATEGORY_DELETE_FAILED,
+  CATEGORY_DELETE_REQUEST,
+  CATEGORY_DELETE_SUCCESS,
   CATEGORY_DETAIL_FAILED,
   CATEGORY_DETAIL_REQUEST,
   CATEGORY_DETAIL_SUCCESS,
@@ -103,6 +106,31 @@ export const categoryUpdateReducer = (state = {}, action) => {
         message: 'Catégorie modifiée avec succès',
       };
     case CATEGORY_UPDATE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// category delete
+export const categoryDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CATEGORY_DELETE_REQUEST:
+      return {
+        loading: true,
+      };
+    case CATEGORY_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: 'Catégorie supprimée avec succès',
+      };
+    case CATEGORY_DELETE_FAILED:
       return {
         loading: false,
         error: action.payload,
