@@ -16,7 +16,7 @@ import Paginate from '../utilities/Paginate';
 const ProductList = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { categoryId } = router.query;
+  const { id } = router.query;
 
   const { loading, error, pagination, products } = useSelector(
     (state) => state.productList
@@ -30,12 +30,12 @@ const ProductList = () => {
   // } = useSelector((state) => state.productDelete);
 
   useEffect(() => {
-    if (categoryId) {
+    if (id) {
       dispatch(
         listProductsWithCategoryHandler(
           'select=name,price,variant,qty&limit=10',
           '',
-          categoryId
+          id
         )
       );
     } else {
@@ -43,7 +43,7 @@ const ProductList = () => {
         listProductsHandler('select=name,price,variant,qty&limit=10', '')
       );
     }
-  }, [dispatch, categoryId]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (error) {
@@ -69,12 +69,12 @@ const ProductList = () => {
 
   // pagination handler
   function receiveDataHandler(page) {
-    if (categoryId) {
+    if (id) {
       dispatch(
         listProductsWithCategoryHandler(
           'select=name,price,variant,qty&limit=10',
           page,
-          categoryId
+          id
         )
       );
     } else {
