@@ -50,7 +50,7 @@ const CategoryForm = () => {
 
   useEffect(() => {
     if (success || successUpdate) {
-      toast.success(message || 'Devise créée avec succès.');
+      toast.success(message || 'Catégorie créée avec succès.');
       dispatch(resetNotifications());
       setTimeout(() => {
         router.push('/admin/categories');
@@ -98,7 +98,7 @@ const CategoryForm = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.name}
-                placeholder='Entrez le nom de la devise'
+                placeholder='Entrez le nom de la catégorie'
                 className={touched.name && errors.name ? 'is-invalid' : null}
                 ref={inputRef}
               ></Form.Control>
