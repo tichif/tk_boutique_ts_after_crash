@@ -23,7 +23,7 @@ const ProductForm = () => {
 
   const dispatch = useDispatch();
   const { loading, error, success } = useSelector(
-    (state) => state.categoryCreate
+    (state) => state.productCreate
   );
   const { error: errorCategory, categories } = useSelector(
     (state) => state.categoryList
@@ -92,8 +92,7 @@ const ProductForm = () => {
           // } else {
           //   dispatch(createCategoryHandler(values));
           // }
-          // dispatch(createProductHandler(values));
-          console.log(values);
+          dispatch(createProductHandler(values));
           setSubmitting(false);
           if (success) {
             resetForm(productDefaultValues);
