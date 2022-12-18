@@ -6,7 +6,7 @@ export const createProductSchema = object({
       required_error: "Le nom de l'article est obligatoire.",
     })
       .trim()
-      .min(3, "La nom de l'article doit contenir au moins 3 caractères.")
+      .min(3, "Le nom de l'article doit contenir au moins 3 caractères.")
       .max(50, "Le nom de l'article ne doit pas dépasser 50 caractères."),
     category: string({
       required_error: 'La catégorie est obligatoire.',
