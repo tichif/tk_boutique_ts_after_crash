@@ -9,6 +9,7 @@ import {
   listProductsHandler,
   listProductsWithCategoryHandler,
   resetNotifications,
+  deleteProductHandler,
 } from '../../redux/actions/product';
 import { convertMultipleWords } from '../../utils/string';
 import Paginate from '../utilities/Paginate';
@@ -22,12 +23,12 @@ const ProductList = () => {
     (state) => state.productList
   );
 
-  // const {
-  //   loading: loadingDelete,
-  //   success,
-  //   error: errorDelete,
-  //   message,
-  // } = useSelector((state) => state.productDelete);
+  const {
+    loading: loadingDelete,
+    success,
+    error: errorDelete,
+    message,
+  } = useSelector((state) => state.productDelete);
 
   useEffect(() => {
     if (id) {
@@ -43,23 +44,23 @@ const ProductList = () => {
         listProductsHandler('select=name,price,variant,qty&limit=10', '')
       );
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, errorDelete, success]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorDelete) {
+      toast.error(error || errorDelete);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorDelete]);
 
-  // useEffect(() => {
-  //   if (success) {
-  //     toast.success(message);
-  //     dispatch(resetNotifications());
-  //   }
-  // }, [success, dispatch]);
+  useEffect(() => {
+    if (success) {
+      toast.success(message);
+      dispatch(resetNotifications());
+    }
+  }, [success, dispatch]);
 
-  if (loading) {
+  if (loading || loadingDelete) {
     return <Loader />;
   }
 
@@ -91,8 +92,7 @@ const ProductList = () => {
         'Etes vous sur(e) de vouloir supprimer cette article ? Cette action peut occasionner un dysfonctionnement du site.'
       )
     ) {
-      // dispatch(deleteProductHandler(id));
-      console.log(id);
+      dispatch(deleteProductHandler(id));
     }
   }
 
