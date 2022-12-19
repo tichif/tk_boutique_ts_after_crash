@@ -21,4 +21,4 @@ ImageComponent.defaultProps = {
   alt: 'TK Boutique',
 };
 
-export default Component;
+export default ImageComponent;
