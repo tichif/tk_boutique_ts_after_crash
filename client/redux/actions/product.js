@@ -4,9 +4,15 @@ import {
   PRODUCT_CREATE_FAILED,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
+  PRODUCT_DETAIL_FAILED,
+  PRODUCT_DETAIL_REQUEST,
+  PRODUCT_DETAIL_SUCCESS,
   PRODUCT_LIST_FAILED,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_UPDATE_FAILED,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
   RESET_NOTIFICATIONS,
 } from '../constants/product';
 
@@ -94,6 +100,56 @@ export const createProductHandler = (product) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// get product action
+export const getProductHandler = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_DETAIL_REQUEST });
+
+    const { data } = await axios.get(`${SERVER_API}/products/${id}`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: PRODUCT_DETAIL_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_DETAIL_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// update product action
+export const updateProductHandler = (id, product) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_UPDATE_REQUEST });
+
+    await axios.put(`${SERVER_API}/products/${id}`, product, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    dispatch({
+      type: PRODUCT_UPDATE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_UPDATE_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error

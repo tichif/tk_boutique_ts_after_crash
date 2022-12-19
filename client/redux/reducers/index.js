@@ -44,7 +44,12 @@ import {
   categoryDeleteReducer,
 } from './category';
 
-import { productListReducer, productCreateReducer } from './product';
+import {
+  productListReducer,
+  productCreateReducer,
+  productDetailReducer,
+  productUpdateReducer,
+} from './product';
 
 const reducers = combineReducers({
   contact: contactReducer,
@@ -77,6 +82,8 @@ const reducers = combineReducers({
   categoryDelete: categoryDeleteReducer,
   productList: productListReducer,
   productCreate: productCreateReducer,
+  productDetail: productDetailReducer,
+  productUpdate: productUpdateReducer,
 });
 
 export default reducers;
