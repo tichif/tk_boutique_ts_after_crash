@@ -10,6 +10,8 @@ import { productSchema } from '../../../validations/yup/productSchema';
 import {
   createProductHandler,
   resetNotifications,
+  getProductHandler,
+  updateProductHandler,
 } from '../../../redux/actions/product';
 import { listCategoriesHandler } from '../../../redux/actions/category';
 import Loader from '../../utilities/Loader';
@@ -28,20 +30,20 @@ const ProductForm = () => {
   const { error: errorCategory, categories } = useSelector(
     (state) => state.categoryList
   );
-  // const {
-  //   loading: loadingDetail,
-  //   category,
-  //   error: errorDetail,
-  // } = useSelector((state) => state.categoryDetail);
-  // const {
-  //   loading: loadingUpdate,
-  //   success: successUpdate,
-  //   error: errorUpdate,
-  //   message,
-  // } = useSelector((state) => state.categoryUpdate);
+  const {
+    loading: loadingDetail,
+    product,
+    error: errorDetail,
+  } = useSelector((state) => state.productDetail);
+  const {
+    loading: loadingUpdate,
+    success: successUpdate,
+    error: errorUpdate,
+    message,
+  } = useSelector((state) => state.productUpdate);
 
   const router = useRouter();
-  // const { id } = router.query;
+  const { id } = router.query;
 
   useEffect(() => {
     inputRef.current.focus();
@@ -52,49 +54,65 @@ const ProductForm = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (error || errorCategory) {
-      toast.error(error || errorCategory);
+    if (error || errorCategory || errorDetail || errorUpdate) {
+      toast.error(error || errorCategory || errorDetail || errorUpdate);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorCategory, errorDetail, errorUpdate]);
 
   useEffect(() => {
-    if (success) {
-      toast.success('Article créé avec succès.');
+    if (success || successUpdate) {
+      toast.success(message || 'Article créé avec succès.');
       dispatch(resetNotifications());
       setTimeout(() => {
         router.push('/admin/products');
       }, 2000);
     }
-  }, [success, dispatch]);
+  }, [success, dispatch, successUpdate, message]);
 
-  // useEffect(() => {
-  //   if (id) {
-  //     if (!category || category._id !== id) {
-  //       dispatch(getCategoryHandler(id));
-  //     }
-  //   }
-  // }, [id, category, dispatch]);
+  useEffect(() => {
+    if (id) {
+      if (!product || product._id !== id) {
+        dispatch(getProductHandler(id));
+      }
+    }
+  }, [id, product, dispatch]);
 
-  if (loading) {
+  useEffect(() => {
+    if (product) {
+      setImagePreview(product.photoPrincipal.url);
+    }
+  }, [product]);
+
+  if (loading || loadingDetail || loadingUpdate) {
     return <Loader />;
   }
 
   return (
     <>
       <Formik
-        initialValues={productDefaultValues}
+        initialValues={
+          (product && {
+            name: product.name,
+            price: product.price,
+            qty: product.qty,
+            color: product.color,
+            size: product.size,
+            description: product.description,
+            category: product.category._id,
+          }) ||
+          productDefaultValues
+        }
         validationSchema={productSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          // if (category) {
-          //   dispatch(updateCategoryHandler(id, values));
-          // } else {
-          //   dispatch(createCategoryHandler(values));
-          // }
-          dispatch(createProductHandler(values));
+          if (product) {
+            dispatch(updateProductHandler(id, values));
+          } else {
+            dispatch(createProductHandler(values));
+          }
           setSubmitting(false);
-          if (success) {
+          if (success || successUpdate) {
             resetForm(productDefaultValues);
           }
         }}
@@ -275,7 +293,7 @@ const ProductForm = () => {
               )}
             </div>
             <Button type='submit' variant='primary'>
-              Créer
+              {product ? 'Editer' : 'Créer'}
             </Button>
           </FormikForm>
         )}
