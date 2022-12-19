@@ -49,6 +49,7 @@ import {
   productCreateReducer,
   productDetailReducer,
   productUpdateReducer,
+  productDeleteReducer,
 } from './product';
 
 const reducers = combineReducers({
@@ -84,6 +85,7 @@ const reducers = combineReducers({
   productCreate: productCreateReducer,
   productDetail: productDetailReducer,
   productUpdate: productUpdateReducer,
+  productDelete: productDeleteReducer,
 });
 
 export default reducers;

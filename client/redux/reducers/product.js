@@ -3,6 +3,9 @@ import {
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_RESET,
   PRODUCT_CREATE_SUCCESS,
+  PRODUCT_DELETE_FAILED,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAIL_FAILED,
   PRODUCT_DETAIL_REQUEST,
   PRODUCT_DETAIL_RESET,
@@ -114,6 +117,31 @@ export const productDetailReducer = (state = {}, action) => {
       };
     case RESET_NOTIFICATIONS:
     case PRODUCT_DETAIL_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product delete
+export const productDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_DELETE_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: 'Article supprimé avec succès',
+      };
+    case PRODUCT_DELETE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
       return {};
     default:
       return state;
