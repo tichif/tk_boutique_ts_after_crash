@@ -39,6 +39,7 @@ const ProductPage = () => {
   const [price, setPrice] = useState();
   const [qty, setQty] = useState();
   const [variantId, setVariantId] = useState();
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     if (!product || product._id !== id) {
@@ -67,12 +68,14 @@ const ProductPage = () => {
         setQty(product.qty);
         setColor(product.color);
         setSize(product.size);
+        setPhotos(product.photosSecondaries);
       } else if (product.variant.length) {
         // have variant
         setPrice(product.variant[0].price);
         setQty(product.variant[0].qty);
         setColor(product.variant[0].color);
         setSize(product.variant[0].size);
+        setPhotos(product.variant[0].photosSecondaries);
       } else {
         // no variants and price
         setPrice(0);
@@ -94,10 +97,10 @@ const ProductPage = () => {
     return <Loader />;
   }
 
-  function photoClicked(photo) {
-    setImage(photo.url);
-    setHeight(photo.height / 2.5);
-    setWidth(photo.width / 2.5);
+  function photoClicked(url, height, width) {
+    setImage(url);
+    setHeight(height / 2.5);
+    setWidth(width / 2.5);
   }
 
   function goToVariants(id) {
@@ -128,6 +131,10 @@ const ProductPage = () => {
     setColor(variant.color);
     setSize(variant.size);
     setVariantId(variant._id);
+    setImage(variant.photoPrincipal.url);
+    setHeight(variant.photoPrincipal.height / 2.5);
+    setWidth(variant.photoPrincipal.width / 2.5);
+    setPhotos(variant.photosSecondaries);
   }
 
   return (
@@ -192,28 +199,27 @@ const ProductPage = () => {
             <ListGroup.Item>
               <h3>Photos</h3>
               <Row>
-                {product && product.photoPrincipal && (
+                {image && (
                   <Col
                     md={3}
-                    onClick={() =>
-                      photoClicked(product && product.photoPrincipal)
-                    }
+                    onClick={() => photoClicked(image, height, width)}
                   >
                     <Image
-                      value={product && product.photoPrincipal.url}
-                      width={product && product.photoPrincipal.width / 15}
-                      height={product && product.photoPrincipal.height / 15}
+                      value={image}
+                      width={width / 15}
+                      height={height / 15}
                       src={product && product.name}
                     />
                   </Col>
                 )}
-                {product &&
-                  product.photosSecondaries.length > 0 &&
-                  product.photosSecondaries.map((image) => (
+                {photos.length > 0 &&
+                  photos.map((image) => (
                     <Col
                       md={3}
                       key={image.public_id}
-                      onClick={() => photoClicked(image)}
+                      onClick={() =>
+                        photoClicked(image.url, image.height, image.width)
+                      }
                     >
                       <Image
                         value={image.url}
@@ -223,6 +229,7 @@ const ProductPage = () => {
                       />
                     </Col>
                   ))}
+                <p className='mt-3'>Cliquer sur une image pour l'afficher.</p>
               </Row>
             </ListGroup.Item>
           </ListGroup>
