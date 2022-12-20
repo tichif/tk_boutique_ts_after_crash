@@ -16,8 +16,8 @@ export const createProductSchema = object({
       0,
       "Le prix de l'article ne peut pas être inférieur à 0"
     ),
-    color: string().min(1, 'La couleur est incorrect.'),
-    size: string().min(1, 'La dimension est incorrect.'),
+    color: string(),
+    size: string(),
     qty: number().min(
       0,
       "La quantité de l'article ne peut pas être inférieur à 0"
@@ -29,6 +29,7 @@ export const createProductSchema = object({
     size: true,
     price: true,
     qty: true,
+    description: true,
   }),
 });
 
@@ -85,8 +86,8 @@ export const updateProductSchema = object({
       0,
       "Le prix de l'article ne peut pas être inférieur à 0"
     ),
-    color: string().min(1, 'La couleur est incorrect.'),
-    size: string().min(1, 'La dimension est incorrect.'),
+    color: string(),
+    size: string(),
     qty: number().min(
       0,
       "La quantité de l'article ne peut pas être inférieur à 0"
@@ -98,6 +99,7 @@ export const updateProductSchema = object({
     size: true,
     price: true,
     qty: true,
+    description: true,
   }),
 });
 

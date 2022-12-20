@@ -51,7 +51,7 @@ const ProductForm = () => {
 
   useEffect(() => {
     dispatch(listCategoriesHandler('select=name'));
-  }, [dispatch]);
+  }, [dispatch, errorUpdate, error]);
 
   useEffect(() => {
     if (error || errorCategory || errorDetail || errorUpdate) {

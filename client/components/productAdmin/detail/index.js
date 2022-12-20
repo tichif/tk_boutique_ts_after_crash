@@ -118,7 +118,7 @@ const ProductPage = () => {
         'Etes vous sur(e) de vouloir supprimer cette article ? Cette action peut occasionner un dysfonctionnement du site.'
       )
     ) {
-      deleteProductHandler(id);
+      dispatch(deleteProductHandler(id));
     }
   }
 
