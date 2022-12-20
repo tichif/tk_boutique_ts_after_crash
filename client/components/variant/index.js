@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import Loader from '../utilities/Loader';
 import {
-  getProductVariantHandler,
+  getProductVariantsHandler,
   resetNotifications,
   deleteProductVariantHandler,
 } from '../../redux/actions/product';
@@ -16,7 +16,7 @@ const ProductVariantList = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { loading, error, pagination, variants } = useSelector(
+  const { loading, error, variants } = useSelector(
     (state) => state.productVariantList
   );
 
@@ -29,7 +29,7 @@ const ProductVariantList = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(getProductVariantHandler(id));
+      dispatch(getProductVariantsHandler(id));
     }
   }, [dispatch, id, success, errorDelete]);
 

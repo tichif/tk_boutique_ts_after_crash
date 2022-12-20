@@ -24,9 +24,17 @@ import {
   PRODUCT_VARIANT_DELETE_FAILED,
   PRODUCT_VARIANT_DELETE_REQUEST,
   PRODUCT_VARIANT_DELETE_SUCCESS,
+  PRODUCT_VARIANT_DETAIL_FAILED,
+  PRODUCT_VARIANT_DETAIL_REQUEST,
+  PRODUCT_VARIANT_DETAIL_RESET,
+  PRODUCT_VARIANT_DETAIL_SUCCESS,
   PRODUCT_VARIANT_LIST_FAILED,
   PRODUCT_VARIANT_LIST_REQUEST,
   PRODUCT_VARIANT_LIST_SUCCESS,
+  PRODUCT_VARIANT_UPDATE_FAILED,
+  PRODUCT_VARIANT_UPDATE_REQUEST,
+  PRODUCT_VARIANT_UPDATE_RESET,
+  PRODUCT_VARIANT_UPDATE_SUCCESS,
   RESET_NOTIFICATIONS,
 } from '../constants/product';
 
@@ -227,6 +235,58 @@ export const productVariantDeleteReducer = (state = {}, action) => {
         error: action.payload,
       };
     case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product variant detail
+export const productVariantDetailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_VARIANT_DETAIL_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_VARIANT_DETAIL_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        variant: action.payload,
+      };
+    case PRODUCT_VARIANT_DETAIL_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+    case PRODUCT_VARIANT_DETAIL_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product variant update
+export const productVariantUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_VARIANT_UPDATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_VARIANT_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: 'Variant modifié avec succès.',
+      };
+    case PRODUCT_VARIANT_UPDATE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+    case PRODUCT_VARIANT_UPDATE_RESET:
       return {};
     default:
       return state;

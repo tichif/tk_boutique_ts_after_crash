@@ -53,6 +53,8 @@ import {
   productVariantListReducer,
   productVariantCreateReducer,
   productVariantDeleteReducer,
+  productVariantDetailReducer,
+  productVariantUpdateReducer,
 } from './product';
 
 const reducers = combineReducers({
@@ -92,6 +94,8 @@ const reducers = combineReducers({
   productVariantList: productVariantListReducer,
   productVariantCreate: productVariantCreateReducer,
   productVariantDelete: productVariantDeleteReducer,
+  productVariantDetail: productVariantDetailReducer,
+  productVariantUpdate: productVariantUpdateReducer,
 });
 
 export default reducers;
