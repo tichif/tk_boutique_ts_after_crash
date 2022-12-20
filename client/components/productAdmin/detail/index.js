@@ -34,6 +34,11 @@ const ProductPage = () => {
   const [height, setHeight] = useState(500);
   const [width, setWidth] = useState(500);
   const [alt, setAlt] = useState('TK Boutique');
+  const [color, setColor] = useState();
+  const [size, setSize] = useState();
+  const [price, setPrice] = useState();
+  const [qty, setQty] = useState();
+  const [variantId, setVariantId] = useState();
 
   useEffect(() => {
     if (!product || product._id !== id) {
@@ -49,11 +54,32 @@ const ProductPage = () => {
   }, [error, dispatch, errorDelete]);
 
   useEffect(() => {
-    if (product && product.photoPrincipal && product.photoPrincipal.url) {
-      setImage(product.photoPrincipal.url);
-      setHeight(product.photoPrincipal.height / 2.5);
-      setWidth(product.photoPrincipal.width / 2.5);
-      setAlt(product.name);
+    if (product) {
+      if (product.photoPrincipal && product.photoPrincipal.url) {
+        setImage(product.photoPrincipal.url);
+        setHeight(product.photoPrincipal.height / 2.5);
+        setWidth(product.photoPrincipal.width / 2.5);
+        setAlt(product.name);
+      }
+      // no variants and have price
+      if (product.price && product.color && product.size && product.qty) {
+        setPrice(product.price);
+        setQty(product.qty);
+        setColor(product.color);
+        setSize(product.size);
+      } else if (product.variant.length) {
+        // have variant
+        setPrice(product.variant[0].price);
+        setQty(product.variant[0].qty);
+        setColor(product.variant[0].color);
+        setSize(product.variant[0].size);
+      } else {
+        // no variants and price
+        setPrice(0);
+        setQty(0);
+        setColor('');
+        setSize('');
+      }
     }
   }, [product]);
 
@@ -97,7 +123,11 @@ const ProductPage = () => {
   }
 
   function clickHandler(variant) {
-    console.log(variant);
+    setPrice(variant.price);
+    setQty(variant.qty);
+    setColor(variant.color);
+    setSize(variant.size);
+    setVariantId(variant._id);
   }
 
   return (
@@ -127,16 +157,16 @@ const ProductPage = () => {
                   convertMultipleWords(product.category.name)}
               </p>
               <p>
-                <strong>Couleur</strong>: {product && product.color}
+                <strong>Couleur</strong>: {color}
               </p>
               <p>
-                <strong>Taille</strong>: {product && product.size}
+                <strong>Taille</strong>: {size}
               </p>
               <p>
-                <strong>Prix</strong>: {product && product.price} HTG
+                <strong>Prix</strong>: {price} HTG
               </p>
               <p>
-                <strong>Quantité</strong>: {product && product.qty}
+                <strong>Quantité</strong>: {qty}
               </p>
             </ListGroup.Item>
             {product && product.description && (
