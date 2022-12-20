@@ -8,3 +8,11 @@ export const product = {
   color: '',
   photoPrincipal: '',
 };
+
+export const variant = {
+  price: 0,
+  qty: 0,
+  size: '',
+  color: '',
+  photoPrincipal: '',
+};

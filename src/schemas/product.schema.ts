@@ -131,8 +131,8 @@ export const addProductVariantSchema = object({
       required_error: "La quantité de l'article est obligatoire.",
     }).min(0, "La quantité de l'article ne peut pas être inférieur à 0"),
     price: number({
-      required_error: "La quantité de l'article est obligatoire.",
-    }).min(0, "La quantité de l'article ne peut pas être inférieur à 0"),
+      required_error: "Le prix de l'article est obligatoire.",
+    }).min(0, "Le prix de l'article ne peut pas être inférieur à 0"),
     photoPrincipal: string(),
   }).partial({
     photoPrincipal: true,

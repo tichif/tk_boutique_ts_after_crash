@@ -20,4 +20,24 @@ const productSchema = yup.object().shape({
   photoPrincipal: yup.string(),
 });
 
-export { productSchema };
+const productVariantSchema = yup.object().shape({
+  price: yup
+    .number()
+    .required("Le prix de l'article est obligatoire.")
+    .min(0, "Le prix de l'article ne peut pas être inférieur à 0"),
+  color: yup
+    .string()
+    .required("La couleur de l'article est obligatoire.")
+    .min(1, 'La couleur est incorrect.'),
+  size: yup
+    .string()
+    .required("La dimension de l'article est obligatoire.")
+    .min(1, 'La dimension est incorrect.'),
+  qty: yup
+    .number()
+    .required("La quantité de l'article est obligatoire.")
+    .min(0, "La quantité de l'article ne peut pas être inférieur à 0"),
+  photoPrincipal: yup.string(),
+});
+
+export { productSchema, productVariantSchema };
