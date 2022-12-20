@@ -17,6 +17,10 @@ import {
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
   PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_VARIANT_CREATE_FAILED,
+  PRODUCT_VARIANT_CREATE_REQUEST,
+  PRODUCT_VARIANT_CREATE_RESET,
+  PRODUCT_VARIANT_CREATE_SUCCESS,
   PRODUCT_VARIANT_LIST_FAILED,
   PRODUCT_VARIANT_LIST_REQUEST,
   PRODUCT_VARIANT_LIST_SUCCESS,
@@ -170,6 +174,31 @@ export const productVariantListReducer = (state = { variants: [] }, action) => {
         error: action.payload,
       };
     case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product variant create
+export const productVariantCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_VARIANT_CREATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_VARIANT_CREATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case PRODUCT_VARIANT_CREATE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+    case PRODUCT_VARIANT_CREATE_RESET:
       return {};
     default:
       return state;

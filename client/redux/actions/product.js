@@ -16,6 +16,9 @@ import {
   PRODUCT_UPDATE_FAILED,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_VARIANT_CREATE_FAILED,
+  PRODUCT_VARIANT_CREATE_REQUEST,
+  PRODUCT_VARIANT_CREATE_SUCCESS,
   PRODUCT_VARIANT_LIST_FAILED,
   PRODUCT_VARIANT_LIST_REQUEST,
   PRODUCT_VARIANT_LIST_SUCCESS,
@@ -210,6 +213,33 @@ export const getProductVariantHandler = (id) => async (dispatch) => {
     });
   }
 };
+
+// create product variant action
+export const createProductVariantHandler =
+  (id, variant) => async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_VARIANT_CREATE_REQUEST });
+
+      await axios.put(`${SERVER_API}/products/${id}/variants`, variant, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      dispatch({
+        type: PRODUCT_VARIANT_CREATE_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_VARIANT_CREATE_FAILED,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  };
 
 // reset notification
 export const resetNotifications = () => (dispatch) => {
