@@ -320,7 +320,6 @@ export const updateProductVariantHandler =
 
       dispatch({
         type: PRODUCT_VARIANT_UPDATE_SUCCESS,
-        payload: data.data,
       });
     } catch (error) {
       dispatch({

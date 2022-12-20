@@ -52,7 +52,7 @@ const ProductVariantList = () => {
   }
 
   function clickHandler(productId, variantId) {
-    router.push(`/admin/products/${productId}/${variantId}/edit`);
+    router.push(`/admin/products/${productId}/variants/${variantId}/edit`);
   }
 
   // delete product

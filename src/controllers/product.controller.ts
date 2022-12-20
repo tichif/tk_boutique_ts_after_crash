@@ -902,7 +902,7 @@ export const updateSpecificProductVariantHandler = asyncHandler(
         }
         productVariant.photoPrincipal = {
           public_id: result.public_id,
-          url: result.public_id,
+          url: result.url,
           width: result.width,
           height: result.height,
         };

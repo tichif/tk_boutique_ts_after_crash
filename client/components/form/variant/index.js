@@ -10,6 +10,8 @@ import { productVariantSchema } from '../../../validations/yup/productSchema';
 import {
   createProductVariantHandler,
   resetNotifications,
+  updateProductVariantHandler,
+  getProductVariantHandler,
 } from '../../../redux/actions/product';
 import Loader from '../../utilities/Loader';
 import Image from 'next/image';
@@ -23,74 +25,72 @@ const ProductForm = () => {
   const { loading, error, success } = useSelector(
     (state) => state.productVariantCreate
   );
-  // const {
-  //   loading: loadingDetail,
-  //   product,
-  //   error: errorDetail,
-  // } = useSelector((state) => state.productDetail);
-  // const {
-  //   loading: loadingUpdate,
-  //   success: successUpdate,
-  //   error: errorUpdate,
-  //   message,
-  // } = useSelector((state) => state.productUpdate);
+  const {
+    loading: loadingDetail,
+    variant,
+    error: errorDetail,
+  } = useSelector((state) => state.productVariantDetail);
+  const {
+    loading: loadingUpdate,
+    success: successUpdate,
+    error: errorUpdate,
+    message,
+  } = useSelector((state) => state.productVariantUpdate);
 
   const router = useRouter();
-  const { id } = router.query;
+  const { id, variantId } = router.query;
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorDetail || errorUpdate) {
+      toast.error(error || errorDetail || errorUpdate);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorDetail, errorUpdate]);
 
   useEffect(() => {
-    if (success) {
-      toast.success('variant créé avec succès.');
+    if (success || successUpdate) {
+      toast.success(message || 'variant créé avec succès.');
       dispatch(resetNotifications());
       setTimeout(() => {
         router.push(`/admin/products/${id}/variants`);
       }, 2000);
     }
-  }, [success, dispatch]);
+  }, [success, dispatch, successUpdate, message]);
 
-  // useEffect(() => {
-  //   if (id) {
-  //     if (!product || product._id !== id) {
-  //       dispatch(getProductHandler(id));
-  //     }
-  //   }
-  // }, [id, product, dispatch]);
+  useEffect(() => {
+    if (id && variantId) {
+      if (!variant || variant._id !== variantId) {
+        dispatch(getProductVariantHandler(id, variantId));
+      }
+    }
+  }, [id, variant, dispatch]);
 
-  // useEffect(() => {
-  //   if (product) {
-  //     setImagePreview(product.photoPrincipal.url);
-  //   }
-  // }, [product]);
+  useEffect(() => {
+    if (variant) {
+      setImagePreview(variant.photoPrincipal.url);
+    }
+  }, [variant]);
 
-  if (loading) {
+  if (loading || loadingDetail || loadingUpdate) {
     return <Loader />;
   }
 
   return (
     <>
       <Formik
-        initialValues={variantDefaultValues}
+        initialValues={variant || variantDefaultValues}
         validationSchema={productVariantSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          // if (product) {
-          //   dispatch(updateProductHandler(id, values));
-          // } else {
-          //   dispatch(createProductHandler(values));
-          // }
-          dispatch(createProductVariantHandler(id, values));
-          console.log('ok');
+          if (variant) {
+            dispatch(updateProductVariantHandler(id, variantId, values));
+          } else {
+            dispatch(createProductVariantHandler(id, values));
+          }
           setSubmitting(false);
           if (success) {
             resetForm(variantDefaultValues);
@@ -209,7 +209,7 @@ const ProductForm = () => {
               )}
             </div>
             <Button type='submit' variant='primary'>
-              Créer
+              {variant ? 'Editer' : 'Créer'}
             </Button>
           </FormikForm>
         )}
