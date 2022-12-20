@@ -21,6 +21,9 @@ import {
   PRODUCT_VARIANT_CREATE_REQUEST,
   PRODUCT_VARIANT_CREATE_RESET,
   PRODUCT_VARIANT_CREATE_SUCCESS,
+  PRODUCT_VARIANT_DELETE_FAILED,
+  PRODUCT_VARIANT_DELETE_REQUEST,
+  PRODUCT_VARIANT_DELETE_SUCCESS,
   PRODUCT_VARIANT_LIST_FAILED,
   PRODUCT_VARIANT_LIST_REQUEST,
   PRODUCT_VARIANT_LIST_SUCCESS,
@@ -199,6 +202,31 @@ export const productVariantCreateReducer = (state = {}, action) => {
       };
     case RESET_NOTIFICATIONS:
     case PRODUCT_VARIANT_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product variant delete
+export const productVariantDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_VARIANT_DELETE_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_VARIANT_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: 'Variant supprimé avec succès.',
+      };
+    case PRODUCT_VARIANT_DELETE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
       return {};
     default:
       return state;
