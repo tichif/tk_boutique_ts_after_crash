@@ -96,6 +96,10 @@ const ProductPage = () => {
     }
   }
 
+  function clickHandler(variant) {
+    console.log(variant);
+  }
+
   return (
     <>
       <Head>
@@ -144,24 +148,35 @@ const ProductPage = () => {
             {product && product.variant.length > 0 && (
               <ListGroup.Item>
                 <h3>Variant</h3>
+                {product.variant.map((v) => (
+                  <Button
+                    key={v._id}
+                    onClick={() => clickHandler(v)}
+                    className='btn-block'
+                  >
+                    {v.color} / {v.size}
+                  </Button>
+                ))}
               </ListGroup.Item>
             )}
             <ListGroup.Item>
               <h3>Photos</h3>
               <Row>
-                <Col
-                  md={3}
-                  onClick={() =>
-                    photoClicked(product && product.photoPrincipal)
-                  }
-                >
-                  <Image
-                    value={product && product.photoPrincipal.url}
-                    width={product && product.photoPrincipal.width / 15}
-                    height={product && product.photoPrincipal.height / 15}
-                    src={product && product.name}
-                  />
-                </Col>
+                {product && product.photoPrincipal && (
+                  <Col
+                    md={3}
+                    onClick={() =>
+                      photoClicked(product && product.photoPrincipal)
+                    }
+                  >
+                    <Image
+                      value={product && product.photoPrincipal.url}
+                      width={product && product.photoPrincipal.width / 15}
+                      height={product && product.photoPrincipal.height / 15}
+                      src={product && product.name}
+                    />
+                  </Col>
+                )}
                 {product &&
                   product.photosSecondaries.length > 0 &&
                   product.photosSecondaries.map((image) => (
@@ -192,7 +207,7 @@ const ProductPage = () => {
               <i className='far fa-eye'></i> Voir Photos
             </Button>
             <Button
-              variant='primary'
+              variant='warning'
               className='btn-md mt-2'
               onClick={() => goToEdit(product && product._id)}
             >
@@ -206,9 +221,9 @@ const ProductPage = () => {
                 <Button
                   variant='info'
                   className='btn-md mt-2'
-                  onClick={() => goToEdit(product && product._id)}
+                  onClick={() => goToVariants(product && product._id)}
                 >
-                  <i className='fas fa-plus'></i> Ajouter variants
+                  <i className='fas fa-eye'></i> Voir variants
                 </Button>
               )}
             <Button
