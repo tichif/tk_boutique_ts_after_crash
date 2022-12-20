@@ -55,10 +55,18 @@ const ProductPage = () => {
     return <Loader />;
   }
 
+  function photoClicked(photo) {
+    setImage(photo.url);
+    setHeight(photo.height / 2.5);
+    setWidth(photo.width / 2.5);
+  }
+
   return (
     <>
       <Head>
-        <title>{product && convertMultipleWords(product.name)}</title>
+        <title>
+          {product && convertMultipleWords(product.name)} | TK Boutique
+        </title>
       </Head>
       <Link href='/admin/products' className='my-3 btn btn-light'>
         <i className='fas fa-arrow-left'></i> Retour
@@ -98,7 +106,45 @@ const ProductPage = () => {
                 <p>{product && product.description}</p>
               </ListGroup.Item>
             )}
-            <ListGroup.Item></ListGroup.Item>
+            {product && product.variant.length > 0 && (
+              <ListGroup.Item>
+                <h3>Variant</h3>
+              </ListGroup.Item>
+            )}
+            <ListGroup.Item>
+              <h3>Photos</h3>
+              <Row>
+                <Col
+                  md={3}
+                  onClick={() =>
+                    photoClicked(product && product.photoPrincipal)
+                  }
+                >
+                  <Image
+                    value={product && product.photoPrincipal.url}
+                    width={product && product.photoPrincipal.width / 15}
+                    height={product && product.photoPrincipal.height / 15}
+                    src={product && product.name}
+                  />
+                </Col>
+                {product &&
+                  product.photosSecondaries.length > 0 &&
+                  product.photosSecondaries.map((image) => (
+                    <Col
+                      md={3}
+                      key={image.public_id}
+                      onClick={() => photoClicked(image)}
+                    >
+                      <Image
+                        value={image.url}
+                        width={image.width / 15}
+                        height={image.height / 15}
+                        src={product && product.name}
+                      />
+                    </Col>
+                  ))}
+              </Row>
+            </ListGroup.Item>
           </ListGroup>
         </Col>
       </Row>
