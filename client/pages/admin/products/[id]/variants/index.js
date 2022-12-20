@@ -10,10 +10,10 @@ const VariantsPage = () => {
   const { id } = useRouter().query;
   return (
     <Auth admin>
-      <Layout title='Toutes les variantes'>
+      <Layout title='Tous les variants'>
         <Row className='align-items-center'>
           <Col>
-            <h1>Variantes</h1>
+            <h1>Variants</h1>
           </Col>
           <Col className='text-right'>
             <Link
