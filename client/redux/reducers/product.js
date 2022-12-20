@@ -17,6 +17,9 @@ import {
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
   PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_VARIANT_LIST_FAILED,
+  PRODUCT_VARIANT_LIST_REQUEST,
+  PRODUCT_VARIANT_LIST_SUCCESS,
   RESET_NOTIFICATIONS,
 } from '../constants/product';
 
@@ -137,6 +140,31 @@ export const productDeleteReducer = (state = {}, action) => {
         message: 'Article supprimé avec succès',
       };
     case PRODUCT_DELETE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product variant list
+export const productVariantListReducer = (state = { variants: [] }, action) => {
+  switch (action.type) {
+    case PRODUCT_VARIANT_LIST_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_VARIANT_LIST_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        variants: action.payload,
+      };
+    case PRODUCT_VARIANT_LIST_FAILED:
       return {
         loading: false,
         error: action.payload,

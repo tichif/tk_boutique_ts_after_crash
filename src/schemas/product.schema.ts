@@ -29,7 +29,6 @@ export const createProductSchema = object({
     size: true,
     price: true,
     qty: true,
-    description: true,
   }),
 });
 
@@ -99,7 +98,6 @@ export const updateProductSchema = object({
     size: true,
     price: true,
     qty: true,
-    description: true,
   }),
 });
 
