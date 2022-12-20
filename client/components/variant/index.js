@@ -8,9 +8,8 @@ import Loader from '../utilities/Loader';
 import {
   getProductVariantHandler,
   resetNotifications,
+  deleteProductVariantHandler,
 } from '../../redux/actions/product';
-import { convertMultipleWords } from '../../utils/string';
-import Paginate from '../utilities/Paginate';
 
 const ProductVariantList = () => {
   const dispatch = useDispatch();
@@ -21,34 +20,34 @@ const ProductVariantList = () => {
     (state) => state.productVariantList
   );
 
-  // const {
-  //   loading: loadingDelete,
-  //   success,
-  //   error: errorDelete,
-  //   message,
-  // } = useSelector((state) => state.productDelete);
+  const {
+    loading: loadingDelete,
+    success,
+    error: errorDelete,
+    message,
+  } = useSelector((state) => state.productVariantDelete);
 
   useEffect(() => {
     if (id) {
       dispatch(getProductVariantHandler(id));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, success, errorDelete]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorDelete) {
+      toast.error(error || errorDelete);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorDelete]);
 
-  // useEffect(() => {
-  //   if (success) {
-  //     toast.success(message);
-  //     dispatch(resetNotifications());
-  //   }
-  // }, [success, dispatch]);
+  useEffect(() => {
+    if (success) {
+      toast.success(message);
+      dispatch(resetNotifications());
+    }
+  }, [success, dispatch]);
 
-  if (loading) {
+  if (loading || loadingDelete) {
     return <Loader />;
   }
 
@@ -63,8 +62,7 @@ const ProductVariantList = () => {
         'Etes vous sur(e) de vouloir supprimer cette variante ? Cette action peut occasionner un dysfonctionnement du site.'
       )
     ) {
-      // dispatch(deleteProductHandler(id));
-      console.log(productId, variantId);
+      dispatch(deleteProductVariantHandler(productId, variantId));
     }
   }
 
