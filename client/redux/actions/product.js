@@ -16,6 +16,9 @@ import {
   PRODUCT_UPDATE_FAILED,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_VARIANT_LIST_FAILED,
+  PRODUCT_VARIANT_LIST_REQUEST,
+  PRODUCT_VARIANT_LIST_SUCCESS,
   RESET_NOTIFICATIONS,
 } from '../constants/product';
 
@@ -176,6 +179,30 @@ export const deleteProductHandler = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DELETE_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// get product variant action
+export const getProductVariantHandler = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_VARIANT_LIST_REQUEST });
+
+    const { data } = await axios.get(`${SERVER_API}/products/${id}/variants`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: PRODUCT_VARIANT_LIST_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_VARIANT_LIST_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error
