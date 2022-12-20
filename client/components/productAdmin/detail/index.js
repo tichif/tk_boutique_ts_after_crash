@@ -10,6 +10,7 @@ import Loader from '../../utilities/Loader';
 import {
   getProductHandler,
   resetNotifications,
+  deleteProductHandler,
 } from '../../../redux/actions/product';
 import Image from '../../utilities/Image';
 import { convertMultipleWords } from '../../../utils/string';
@@ -23,6 +24,11 @@ const ProductPage = () => {
   const { loading, error, product } = useSelector(
     (state) => state.productDetail
   );
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success,
+  } = useSelector((state) => state.productDelete);
 
   const [image, setImage] = useState(process.env.NEXT_PUBLIC_LOGO_ADDRESS);
   const [height, setHeight] = useState(500);
@@ -33,14 +39,14 @@ const ProductPage = () => {
     if (!product || product._id !== id) {
       dispatch(getProductHandler(id));
     }
-  }, [product, id, dispatch]);
+  }, [product, id, dispatch, errorDelete]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorDelete) {
+      toast.error(error || errorDelete);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorDelete]);
 
   useEffect(() => {
     if (product && product.photoPrincipal && product.photoPrincipal.url) {
@@ -51,7 +57,14 @@ const ProductPage = () => {
     }
   }, [product]);
 
-  if (loading) {
+  useEffect(() => {
+    if (success) {
+      dispatch(resetNotifications());
+      router.push('/admin/products');
+    }
+  }, [success, dispatch]);
+
+  if (loading || loadingDelete) {
     return <Loader />;
   }
 
@@ -59,6 +72,28 @@ const ProductPage = () => {
     setImage(photo.url);
     setHeight(photo.height / 2.5);
     setWidth(photo.width / 2.5);
+  }
+
+  function goToVariants(id) {
+    router.push(`/admin/products/${id}/variants`);
+  }
+
+  function goToEdit(id) {
+    router.push(`/admin/products/${id}/edit`);
+  }
+
+  function goToImages(id) {
+    router.push(`/admin/products/${id}/images`);
+  }
+
+  function deleteHandler(id) {
+    if (
+      window.confirm(
+        'Etes vous sur(e) de vouloir supprimer cette article ? Cette action peut occasionner un dysfonctionnement du site.'
+      )
+    ) {
+      deleteProductHandler(id);
+    }
   }
 
   return (
@@ -146,6 +181,44 @@ const ProductPage = () => {
               </Row>
             </ListGroup.Item>
           </ListGroup>
+        </Col>
+        <Col md={3}>
+          <Card>
+            <Button
+              variant='success'
+              className='btn-md'
+              onClick={() => goToImages(product && product._id)}
+            >
+              <i className='far fa-eye'></i> Voir Photos
+            </Button>
+            <Button
+              variant='primary'
+              className='btn-md mt-2'
+              onClick={() => goToEdit(product && product._id)}
+            >
+              <i className='fas fa-edit'></i> Editer
+            </Button>
+            {product &&
+              (!product.qty ||
+                !product.size ||
+                !product.color ||
+                !product.price) && (
+                <Button
+                  variant='info'
+                  className='btn-md mt-2'
+                  onClick={() => goToEdit(product && product._id)}
+                >
+                  <i className='fas fa-plus'></i> Ajouter variants
+                </Button>
+              )}
+            <Button
+              variant='danger'
+              className='btn-md mt-2'
+              onClick={() => deleteHandler(product && product._id)}
+            >
+              <i className='fas fa-trash'></i> Supprimer
+            </Button>
+          </Card>
         </Col>
       </Row>
     </>
