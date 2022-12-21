@@ -37,7 +37,7 @@ const CategoryList = () => {
       toast.error(error || errorDelete);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorDelete]);
 
   useEffect(() => {
     if (success) {
