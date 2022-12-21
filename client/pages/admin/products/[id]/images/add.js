@@ -6,7 +6,7 @@ import PhotoForm from '../../../../../components/form/photo';
 import Auth from '../../../../../components/auth';
 import FormContainer from '../../../../../components/Layout/FormContainer';
 
-const ProductCreatePage = () => {
+const ProductPhotoCreatePage = () => {
   const { id } = useRouter().query;
   return (
     <Auth admin>
@@ -26,4 +26,4 @@ const ProductCreatePage = () => {
   );
 };
 
-export default ProductCreatePage;
+export default ProductPhotoCreatePage;

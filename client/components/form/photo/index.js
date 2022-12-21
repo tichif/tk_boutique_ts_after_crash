@@ -11,6 +11,7 @@ import { productPhotoSchema } from '../../../validations/yup/productSchema';
 import {
   addProductPhotoHandler,
   resetNotifications,
+  addProductVariantPhotoHandler,
 } from '../../../redux/actions/product';
 import Loader from '../../utilities/Loader';
 
@@ -23,7 +24,7 @@ const ProductForm = () => {
   );
 
   const router = useRouter();
-  const { id } = router.query;
+  const { id, variantId } = router.query;
 
   useEffect(() => {
     if (error) {
@@ -37,7 +38,11 @@ const ProductForm = () => {
       toast.success('Photo ajoutée avec succès.');
       dispatch(resetNotifications());
       setTimeout(() => {
-        router.push(`/admin/products/${id}/images`);
+        if (variantId) {
+          router.push(`/admin/products/${id}/variants/${variantId}/images`);
+        } else {
+          router.push(`/admin/products/${id}/images`);
+        }
       }, 2000);
     }
   }, [success, dispatch]);
@@ -53,8 +58,13 @@ const ProductForm = () => {
         validationSchema={productPhotoSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          dispatch(addProductPhotoHandler(id, values));
+          if (variantId) {
+            dispatch(addProductVariantPhotoHandler(id, variantId, values));
+          } else {
+            dispatch(addProductPhotoHandler(id, values));
+          }
           setSubmitting(false);
+          setImagePreview();
           if (success) {
             resetForm(photoDefaultValues);
           }

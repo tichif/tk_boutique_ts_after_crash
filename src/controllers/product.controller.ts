@@ -1001,7 +1001,7 @@ export const addSecondaryPhotoToProductVariantHandler = asyncHandler(
       if (productVariant.photosSecondaries) {
         productVariant.photosSecondaries.push({
           public_id: result.public_id,
-          url: result.public_id,
+          url: result.url,
           width: result.width,
           height: result.height,
         });
