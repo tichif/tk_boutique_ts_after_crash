@@ -19,7 +19,7 @@ const ProductPhotoListPage = () => {
           <Col className='text-right'>
             <Link
               className='my-3 btn btn-primary'
-              href={`/admin/products/${id}/photo/add`}
+              href={`/admin/products/${id}/images/add`}
             >
               <i className='fas fa-plus'></i> Ajouter
             </Link>
