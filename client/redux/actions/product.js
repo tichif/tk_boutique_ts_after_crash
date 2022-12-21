@@ -16,6 +16,9 @@ import {
   PRODUCT_PHOTO_CREATE_FAILED,
   PRODUCT_PHOTO_CREATE_REQUEST,
   PRODUCT_PHOTO_CREATE_SUCCESS,
+  PRODUCT_PHOTO_DELETE_FAILED,
+  PRODUCT_PHOTO_DELETE_REQUEST,
+  PRODUCT_PHOTO_DELETE_SUCCESS,
   PRODUCT_PHOTO_LIST_FAILED,
   PRODUCT_PHOTO_LIST_REQUEST,
   PRODUCT_PHOTO_LIST_SUCCESS,
@@ -377,6 +380,32 @@ export const addProductPhotoHandler = (id, photo) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_PHOTO_CREATE_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// delete product photo action
+export const deleteProductPhotoHandler = (id, photoId) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_PHOTO_DELETE_REQUEST });
+
+    await axios.delete(
+      `${SERVER_API}/products/${id}/photos?public_id=${photoId}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    dispatch({
+      type: PRODUCT_PHOTO_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_PHOTO_DELETE_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error

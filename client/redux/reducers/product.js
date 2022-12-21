@@ -17,6 +17,9 @@ import {
   PRODUCT_PHOTO_CREATE_REQUEST,
   PRODUCT_PHOTO_CREATE_RESET,
   PRODUCT_PHOTO_CREATE_SUCCESS,
+  PRODUCT_PHOTO_DELETE_FAILED,
+  PRODUCT_PHOTO_DELETE_REQUEST,
+  PRODUCT_PHOTO_DELETE_SUCCESS,
   PRODUCT_PHOTO_LIST_FAILED,
   PRODUCT_PHOTO_LIST_REQUEST,
   PRODUCT_PHOTO_LIST_SUCCESS,
@@ -344,6 +347,31 @@ export const productPhotoCreateReducer = (state = {}, action) => {
       };
     case RESET_NOTIFICATIONS:
     case PRODUCT_PHOTO_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product photo delete
+export const productPhotoDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_PHOTO_DELETE_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_PHOTO_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: 'Photo supprimée avec succès.',
+      };
+    case PRODUCT_PHOTO_DELETE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
       return {};
     default:
       return state;

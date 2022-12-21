@@ -667,7 +667,7 @@ export const getProductSecondaryPhotosHandler = asyncHandler(
 );
 
 // @route   Delete /api/v2/products/:productId/photos?public_id=
-// @desc    Get secondaries photos for a product
+// @desc    Delete secondaries photos for a product
 // @access  Private - Admin
 export const deletePublicSecondaryForProductHandler = asyncHandler(
   async (

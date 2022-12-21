@@ -18,6 +18,12 @@ const ProductPhotoListPage = () => {
           </Col>
           <Col className='text-right'>
             <Link
+              className='my-3 mr-3 btn btn-light'
+              href={`/admin/products/${id}`}
+            >
+              <i className='fas fa-arrow-left'></i> Retour
+            </Link>
+            <Link
               className='my-3 btn btn-primary'
               href={`/admin/products/${id}/images/add`}
             >
