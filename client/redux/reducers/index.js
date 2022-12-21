@@ -55,6 +55,7 @@ import {
   productVariantDeleteReducer,
   productVariantDetailReducer,
   productVariantUpdateReducer,
+  productPhotoListReducer,
 } from './product';
 
 const reducers = combineReducers({
@@ -96,6 +97,7 @@ const reducers = combineReducers({
   productVariantDelete: productVariantDeleteReducer,
   productVariantDetail: productVariantDetailReducer,
   productVariantUpdate: productVariantUpdateReducer,
+  productPhotoList: productPhotoListReducer,
 });
 
 export default reducers;

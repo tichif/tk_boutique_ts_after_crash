@@ -13,6 +13,9 @@ import {
   PRODUCT_LIST_FAILED,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_PHOTO_LIST_FAILED,
+  PRODUCT_PHOTO_LIST_REQUEST,
+  PRODUCT_PHOTO_LIST_SUCCESS,
   PRODUCT_UPDATE_FAILED,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
@@ -287,6 +290,31 @@ export const productVariantUpdateReducer = (state = {}, action) => {
       };
     case RESET_NOTIFICATIONS:
     case PRODUCT_VARIANT_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product photo list
+export const productPhotoListReducer = (state = { photos: [] }, action) => {
+  switch (action.type) {
+    case PRODUCT_PHOTO_LIST_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_PHOTO_LIST_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        photos: action.payload,
+      };
+    case PRODUCT_PHOTO_LIST_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
       return {};
     default:
       return state;

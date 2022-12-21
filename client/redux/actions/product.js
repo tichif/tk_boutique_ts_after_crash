@@ -13,6 +13,9 @@ import {
   PRODUCT_LIST_FAILED,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_PHOTO_LIST_FAILED,
+  PRODUCT_PHOTO_LIST_REQUEST,
+  PRODUCT_PHOTO_LIST_SUCCESS,
   PRODUCT_UPDATE_FAILED,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
@@ -331,6 +334,30 @@ export const updateProductVariantHandler =
       });
     }
   };
+
+// get product photo action
+export const getProductPhotosHandler = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_PHOTO_LIST_REQUEST });
+
+    const { data } = await axios.get(`${SERVER_API}/products/${id}/photos`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: PRODUCT_PHOTO_LIST_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_PHOTO_LIST_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
 
 // reset notification
 export const resetNotifications = () => (dispatch) => {
