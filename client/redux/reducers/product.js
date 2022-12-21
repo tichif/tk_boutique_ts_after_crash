@@ -13,6 +13,10 @@ import {
   PRODUCT_LIST_FAILED,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_PHOTO_CREATE_FAILED,
+  PRODUCT_PHOTO_CREATE_REQUEST,
+  PRODUCT_PHOTO_CREATE_RESET,
+  PRODUCT_PHOTO_CREATE_SUCCESS,
   PRODUCT_PHOTO_LIST_FAILED,
   PRODUCT_PHOTO_LIST_REQUEST,
   PRODUCT_PHOTO_LIST_SUCCESS,
@@ -315,6 +319,31 @@ export const productPhotoListReducer = (state = { photos: [] }, action) => {
         error: action.payload,
       };
     case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product photo create
+export const productPhotoCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_PHOTO_CREATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_PHOTO_CREATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case PRODUCT_PHOTO_CREATE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+    case PRODUCT_PHOTO_CREATE_RESET:
       return {};
     default:
       return state;
