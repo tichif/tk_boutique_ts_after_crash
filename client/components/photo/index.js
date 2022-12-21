@@ -11,6 +11,7 @@ import {
   resetNotifications,
   deleteProductPhotoHandler,
   getProductVariantPhotosHandler,
+  deleteProductVariantPhotoHandler,
 } from '../../redux/actions/product';
 
 const ProductPhotoList = () => {
@@ -56,13 +57,17 @@ const ProductPhotoList = () => {
   }
 
   // delete photo
-  function deleteHandler(id, photoId) {
+  function deleteHandler(id, photoId, variantId) {
     if (
       window.confirm(
         'Etes vous sur(e) de vouloir supprimer cette photo ? Cette action peut occasionner un dysfonctionnement du site.'
       )
     ) {
-      dispatch(deleteProductPhotoHandler(id, photoId));
+      if (variantId) {
+        dispatch(deleteProductVariantPhotoHandler(id, variantId, photoId));
+      } else {
+        dispatch(deleteProductPhotoHandler(id, photoId));
+      }
     }
   }
 
@@ -96,7 +101,9 @@ const ProductPhotoList = () => {
                     <Button
                       variant='danger'
                       className='btn-sm'
-                      onClick={() => deleteHandler(id, photo.public_id)}
+                      onClick={() =>
+                        deleteHandler(id, photo.public_id, variantId)
+                      }
                     >
                       <i className='fas fa-trash'></i> Supprimer
                     </Button>
