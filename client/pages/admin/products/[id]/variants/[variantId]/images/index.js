@@ -19,7 +19,7 @@ const ProductVariantPhotoListPage = () => {
           <Col className='text-right'>
             <Link
               className='my-3 mr-3 btn btn-light'
-              href={`/admin/products/${id}/variants/${variantId}`}
+              href={`/admin/products/${id}/variants`}
             >
               <i className='fas fa-arrow-left'></i> Retour
             </Link>

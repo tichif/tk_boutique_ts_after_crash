@@ -442,6 +442,61 @@ export const getProductVariantPhotosHandler =
     }
   };
 
+// add product variant photo action
+export const addProductVariantPhotoHandler =
+  (productId, variantId, photo) => async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_PHOTO_CREATE_REQUEST });
+
+      await axios.put(
+        `${SERVER_API}/products/${productId}/variants/${variantId}/photos`,
+        photo,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: PRODUCT_PHOTO_CREATE_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_PHOTO_CREATE_FAILED,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  };
+
+// delete product variant photo action
+export const deleteProductVariantPhotoHandler =
+  (productId, variantId, photoId) => async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_PHOTO_DELETE_REQUEST });
+
+      await axios.delete(
+        `${SERVER_API}/products/${productId}/variants/${variantId}/photos?public_id=${photoId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: PRODUCT_PHOTO_DELETE_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_PHOTO_DELETE_FAILED,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  };
+
 // reset notification
 export const resetNotifications = () => (dispatch) => {
   dispatch({
