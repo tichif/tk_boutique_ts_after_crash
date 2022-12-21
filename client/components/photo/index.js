@@ -9,6 +9,7 @@ import Loader from '../utilities/Loader';
 import {
   getProductPhotosHandler,
   resetNotifications,
+  deleteProductPhotoHandler,
 } from '../../redux/actions/product';
 
 const ProductPhotoList = () => {
@@ -20,44 +21,43 @@ const ProductPhotoList = () => {
     (state) => state.productPhotoList
   );
 
-  // const {
-  //   loading: loadingDelete,
-  //   success,
-  //   error: errorDelete,
-  //   message,
-  // } = useSelector((state) => state.categoryDelete);
+  const {
+    loading: loadingDelete,
+    success,
+    error: errorDelete,
+    message,
+  } = useSelector((state) => state.productPhotoDelete);
 
   useEffect(() => {
     dispatch(getProductPhotosHandler(id));
-  }, [dispatch]);
+  }, [dispatch, success, errorDelete]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorDelete) {
+      toast.error(error || errorDelete);
       dispatch(resetNotifications());
     }
   }, [error, dispatch]);
 
-  // useEffect(() => {
-  //   if (success) {
-  //     toast.success(message);
-  //     dispatch(resetNotifications());
-  //   }
-  // }, [success, dispatch]);
+  useEffect(() => {
+    if (success) {
+      toast.success(message);
+      dispatch(resetNotifications());
+    }
+  }, [success, dispatch]);
 
-  if (loading) {
+  if (loading || loadingDelete) {
     return <Loader />;
   }
 
   // delete photo
-  function deleteHandler(id) {
+  function deleteHandler(id, photoId) {
     if (
       window.confirm(
         'Etes vous sur(e) de vouloir supprimer cette photo ? Cette action peut occasionner un dysfonctionnement du site.'
       )
     ) {
-      // dispatch(deleteCategoryHandler(id));
-      console.log(id);
+      dispatch(deleteProductPhotoHandler(id, photoId));
     }
   }
 
@@ -91,7 +91,7 @@ const ProductPhotoList = () => {
                     <Button
                       variant='danger'
                       className='btn-sm'
-                      onClick={() => deleteHandler(photo.public_id)}
+                      onClick={() => deleteHandler(id, photo.public_id)}
                     >
                       <i className='fas fa-trash'></i> Supprimer
                     </Button>
