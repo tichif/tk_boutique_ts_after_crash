@@ -10,12 +10,13 @@ import {
   getProductPhotosHandler,
   resetNotifications,
   deleteProductPhotoHandler,
+  getProductVariantPhotosHandler,
 } from '../../redux/actions/product';
 
 const ProductPhotoList = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { id } = router.query;
+  const { id, variantId } = router.query;
 
   const { loading, error, photos } = useSelector(
     (state) => state.productPhotoList
@@ -29,8 +30,12 @@ const ProductPhotoList = () => {
   } = useSelector((state) => state.productPhotoDelete);
 
   useEffect(() => {
-    dispatch(getProductPhotosHandler(id));
-  }, [dispatch, success, errorDelete]);
+    if (variantId) {
+      dispatch(getProductVariantPhotosHandler(id, variantId));
+    } else {
+      dispatch(getProductPhotosHandler(id));
+    }
+  }, [dispatch, success, errorDelete, id, variantId]);
 
   useEffect(() => {
     if (error || errorDelete) {

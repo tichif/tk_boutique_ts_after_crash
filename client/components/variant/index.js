@@ -67,7 +67,7 @@ const ProductVariantList = () => {
   }
 
   function goTo(productId, variantId) {
-    router.push(`/admin/products/${productId}/${variantId}/photos`);
+    router.push(`/admin/products/${productId}/variants/${variantId}/images`);
   }
 
   return (
