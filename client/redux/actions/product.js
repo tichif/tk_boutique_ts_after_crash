@@ -414,6 +414,34 @@ export const deleteProductPhotoHandler = (id, photoId) => async (dispatch) => {
   }
 };
 
+// get product variant photo action
+export const getProductVariantPhotosHandler =
+  (productId, variantId) => async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_PHOTO_LIST_REQUEST });
+
+      const { data } = await axios.get(
+        `${SERVER_API}/products/${productId}/variants/${variantId}/photos`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: PRODUCT_PHOTO_LIST_SUCCESS,
+        payload: data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_PHOTO_LIST_FAILED,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  };
+
 // reset notification
 export const resetNotifications = () => (dispatch) => {
   dispatch({

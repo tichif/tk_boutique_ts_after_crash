@@ -56,6 +56,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (product) {
+      setPhotos(product.photosSecondaries);
       if (product.photoPrincipal && product.photoPrincipal.url) {
         setImage(product.photoPrincipal.url);
         setHeight(product.photoPrincipal.height / 2.5);
@@ -68,7 +69,6 @@ const ProductPage = () => {
         setQty(product.qty);
         setColor(product.color);
         setSize(product.size);
-        setPhotos(product.photosSecondaries);
       } else if (product.variant.length) {
         // have variant
         setPrice(product.variant[0].price);
