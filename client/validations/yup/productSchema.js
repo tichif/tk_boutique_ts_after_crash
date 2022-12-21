@@ -40,4 +40,8 @@ const productVariantSchema = yup.object().shape({
   photoPrincipal: yup.string(),
 });
 
-export { productSchema, productVariantSchema };
+const productPhotoSchema = yup.object().shape({
+  image: yup.string().required('La photo est obligatoire.'),
+});
+
+export { productSchema, productVariantSchema, productPhotoSchema };

@@ -16,3 +16,7 @@ export const variant = {
   color: '',
   photoPrincipal: '',
 };
+
+export const photo = {
+  image: '',
+};
