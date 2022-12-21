@@ -23,6 +23,9 @@ import {
   PRODUCT_PHOTO_LIST_FAILED,
   PRODUCT_PHOTO_LIST_REQUEST,
   PRODUCT_PHOTO_LIST_SUCCESS,
+  PRODUCT_RELATED_LIST_FAILED,
+  PRODUCT_RELATED_LIST_REQUEST,
+  PRODUCT_RELATED_LIST_SUCCESS,
   PRODUCT_UPDATE_FAILED,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
@@ -367,6 +370,31 @@ export const productPhotoDeleteReducer = (state = {}, action) => {
         message: 'Photo supprimée avec succès.',
       };
     case PRODUCT_PHOTO_DELETE_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product related list
+export const productRelatedListReducer = (state = { products: [] }, action) => {
+  switch (action.type) {
+    case PRODUCT_RELATED_LIST_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_RELATED_LIST_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        products: action.payload,
+      };
+    case PRODUCT_RELATED_LIST_FAILED:
       return {
         loading: false,
         error: action.payload,

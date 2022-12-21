@@ -497,6 +497,34 @@ export const deleteProductVariantPhotoHandler =
     }
   };
 
+// get related products action
+export const getRelatedProductsHandler =
+  (id, categoryId) => async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_DELETE_REQUEST });
+
+      const { data } = await axios.get(
+        `${SERVER_API}/products/${id}/${categoryId}/related`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: PRODUCT_DELETE_SUCCESS,
+        payload: data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_DELETE_FAILED,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  };
+
 // reset notification
 export const resetNotifications = () => (dispatch) => {
   dispatch({
