@@ -214,7 +214,7 @@ export const logoutHandler = () => async (dispatch) => {
       withCredentials: true,
     };
 
-    await axios.post(`${SERVER_API}/auth/logout`, options, config);
+    await axios.post(`${SERVER_API}/auth/logout`, {}, config);
 
     dispatch({
       type: LOGOUT_SUCCESS,

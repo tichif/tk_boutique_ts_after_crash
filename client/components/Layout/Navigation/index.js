@@ -22,7 +22,7 @@ const Navigation = () => {
   }
 
   function logoutHandler() {
-    console.log('logout');
+    router.push('/logout');
   }
 
   return (
