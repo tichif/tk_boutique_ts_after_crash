@@ -51,6 +51,6 @@ router.post(
   resetPasswordHandler
 );
 
-router.post('/logout', requiredUser, logoutUserHandler);
+router.post('/logout', requiredUser, cleanCache, logoutUserHandler);
 
 export default router;

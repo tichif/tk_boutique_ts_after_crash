@@ -9,6 +9,7 @@ import {
   resendActivationEmailReducer,
   sendResetPasswordEmailReducer,
   resetPasswordReducer,
+  logoutReducer,
 } from './auth';
 
 import {
@@ -73,6 +74,7 @@ const reducers = combineReducers({
   resendActivationEmail: resendActivationEmailReducer,
   sendResetPasswordEmail: sendResetPasswordEmailReducer,
   resetPassword: resetPasswordReducer,
+  logout: logoutReducer,
   userProfile: userProfileReducer,
   userProfileUpdate: userProfileUpdateReducer,
   orderList: orderListReducer,

@@ -20,6 +20,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
 } from '../constants/auth';
 
 const SERVER_API = process.env.NEXT_PUBLIC_SERVER_API;
@@ -194,6 +197,31 @@ export const resetPasswordHandler = (token, options) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: RESET_PASSWORD_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// log out user handler
+export const logoutHandler = () => async (dispatch) => {
+  try {
+    dispatch({ type: LOGOUT_REQUEST });
+
+    const config = {
+      withCredentials: true,
+    };
+
+    await axios.post(`${SERVER_API}/auth/logout`, options, config);
+
+    dispatch({
+      type: LOGOUT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: LOGOUT_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error

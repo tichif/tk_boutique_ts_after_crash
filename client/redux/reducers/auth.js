@@ -18,6 +18,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
 } from '../constants/auth';
 
 // registerUser reducer
@@ -121,6 +124,20 @@ export const resetPasswordReducer = (state = {}, action) => {
     case RESET_PASSWORD_SUCCESS:
       return { loading: false, success: true, message: action.payload };
     case RESET_PASSWORD_FAILED:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+// logout user reducer
+export const logoutReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LOGOUT_REQUEST:
+      return { loading: true };
+    case LOGOUT_SUCCESS:
+      return { loading: false, success: true };
+    case LOGOUT_FAILED:
       return { loading: false, error: action.payload };
     default:
       return state;
