@@ -60,6 +60,7 @@ const ProductPage = () => {
         setImageToShow(product.photoPrincipal);
         setAlt(product.name);
       }
+      setSecondaryImages(product.photosSecondaries);
       // no variants and have price
       if (product.price && product.color && product.size && product.qty) {
         setPrice(product.price);
@@ -209,22 +210,42 @@ const ProductPage = () => {
                     />
                   </Col>
                 )}
-                {secondaryImages.length > 0 &&
-                  secondaryImages.map((image) => (
-                    <Col
-                      md={3}
-                      key={image.public_id}
-                      onClick={() => photoClicked(image)}
-                      className='my-3'
-                    >
-                      <Image
-                        value={image.url}
-                        width={image.width / 15}
-                        height={image.height / 15}
-                        alt={product && product.name}
-                      />
-                    </Col>
-                  ))}
+              </Row>
+              <Row>
+                {secondaryImages.length > 0
+                  ? secondaryImages.map((image) => (
+                      <Col
+                        md={6}
+                        key={image.public_id}
+                        onClick={() => photoClicked(image)}
+                        className='my-3'
+                      >
+                        <Image
+                          value={image.url}
+                          width={image.width / 15}
+                          height={image.height / 15}
+                          alt={product && product.name}
+                        />
+                      </Col>
+                    ))
+                  : product &&
+                    product.photosSecondaries &&
+                    product.photosSecondaries.length > 0 &&
+                    product.photosSecondaries.map((image) => (
+                      <Col
+                        md={6}
+                        key={image.public_id}
+                        onClick={() => photoClicked(image)}
+                        className='my-3'
+                      >
+                        <Image
+                          value={image.url}
+                          width={image.width / 15}
+                          height={image.height / 15}
+                          alt={product && product.name}
+                        />
+                      </Col>
+                    ))}
                 <p className='mt-3'>Cliquer sur une image pour l'afficher.</p>
               </Row>
             </ListGroup.Item>
