@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Layout from '../../../components/Layout';
 import Loader from '../../../components/utilities/Loader';
 import { activateAccountHandler } from '../../../redux/actions/auth';
+import { useMe } from '../../../context/userContext';
 
 const ChildComponent = () => {
   const { loading, success, error } = useSelector(
@@ -45,6 +46,13 @@ const ChildComponent = () => {
 };
 
 const ActiveAccountPage = () => {
+  const { user } = useMe();
+  const router = useRouter();
+
+  if (user) {
+    router.push('/profil');
+  }
+
   return (
     <Layout title='Activation de compte'>
       <h1>Activation de compte</h1>
