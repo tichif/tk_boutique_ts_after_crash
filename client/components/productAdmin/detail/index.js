@@ -30,16 +30,15 @@ const ProductPage = () => {
     success,
   } = useSelector((state) => state.productDelete);
 
-  const [image, setImage] = useState(process.env.NEXT_PUBLIC_LOGO_ADDRESS);
-  const [height, setHeight] = useState(500);
-  const [width, setWidth] = useState(500);
+  const [imageToShow, setImageToShow] = useState();
   const [alt, setAlt] = useState('TK Boutique');
   const [color, setColor] = useState();
   const [size, setSize] = useState();
   const [price, setPrice] = useState();
   const [qty, setQty] = useState();
   const [variantId, setVariantId] = useState();
-  const [photos, setPhotos] = useState([]);
+  const [secondaryImages, setSecondaryImages] = useState([]);
+  const [imagePrincipal, setImagePrincipal] = useState();
 
   useEffect(() => {
     if (!product || product._id !== id) {
@@ -56,11 +55,9 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (product) {
-      setPhotos(product.photosSecondaries);
-      if (product.photoPrincipal && product.photoPrincipal.url) {
-        setImage(product.photoPrincipal.url);
-        setHeight(product.photoPrincipal.height / 2.5);
-        setWidth(product.photoPrincipal.width / 2.5);
+      if (product.photoPrincipal && product.photoPrincipal) {
+        setImagePrincipal(product.photoPrincipal);
+        setImageToShow(product.photoPrincipal);
         setAlt(product.name);
       }
       // no variants and have price
@@ -75,7 +72,7 @@ const ProductPage = () => {
         setQty(product.variant[0].qty);
         setColor(product.variant[0].color);
         setSize(product.variant[0].size);
-        setPhotos(product.variant[0].photosSecondaries);
+        setSecondaryImages(product.variant[0].photosSecondaries);
       } else {
         // no variants and price
         setPrice(0);
@@ -97,10 +94,8 @@ const ProductPage = () => {
     return <Loader />;
   }
 
-  function photoClicked(url, height, width) {
-    setImage(url);
-    setHeight(height / 2.5);
-    setWidth(width / 2.5);
+  function photoClicked(image) {
+    setImageToShow(image);
   }
 
   function goToVariants(id) {
@@ -131,10 +126,8 @@ const ProductPage = () => {
     setColor(variant.color);
     setSize(variant.size);
     setVariantId(variant._id);
-    setImage(variant.photoPrincipal.url);
-    setHeight(variant.photoPrincipal.height / 2.5);
-    setWidth(variant.photoPrincipal.width / 2.5);
-    setPhotos(variant.photosSecondaries);
+    setImagePrincipal(variant.photoPrincipal);
+    setSecondaryImages(variant.photosSecondaries);
   }
 
   return (
@@ -149,7 +142,14 @@ const ProductPage = () => {
       </Link>
       <Row>
         <Col md={6}>
-          <Image value={image} height={height} width={width} alt={alt} />
+          {imageToShow && (
+            <Image
+              value={imageToShow.url}
+              height={imageToShow.height / 2.5}
+              width={imageToShow.width / 2.5}
+              alt={alt}
+            />
+          )}
         </Col>
         <Col md={3}>
           <ListGroup>
@@ -199,33 +199,29 @@ const ProductPage = () => {
             <ListGroup.Item>
               <h3>Photos</h3>
               <Row>
-                {image && (
-                  <Col
-                    md={3}
-                    onClick={() => photoClicked(image, height, width)}
-                  >
+                {imagePrincipal && (
+                  <Col md={3} onClick={() => photoClicked(imagePrincipal)}>
                     <Image
-                      value={image}
-                      width={width / 15}
-                      height={height / 15}
-                      src={product && product.name}
+                      value={imagePrincipal.url}
+                      width={imagePrincipal.width / 15}
+                      height={imagePrincipal.height / 15}
+                      alt={product && product.name}
                     />
                   </Col>
                 )}
-                {photos.length > 0 &&
-                  photos.map((image) => (
+                {secondaryImages.length > 0 &&
+                  secondaryImages.map((image) => (
                     <Col
                       md={3}
                       key={image.public_id}
-                      onClick={() =>
-                        photoClicked(image.url, image.height, image.width)
-                      }
+                      onClick={() => photoClicked(image)}
+                      className='my-3'
                     >
                       <Image
                         value={image.url}
                         width={image.width / 15}
                         height={image.height / 15}
-                        src={product && product.name}
+                        alt={product && product.name}
                       />
                     </Col>
                   ))}
