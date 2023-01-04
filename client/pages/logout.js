@@ -3,13 +3,14 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { logoutHandler } from '../redux/actions/auth';
-import {} from '../context/userContext';
+import { useMe } from '../context/userContext';
 
 const Logout = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const { success, error } = useSelector((state) => state.logout);
+  const { clearUser } = useMe();
 
   useEffect(() => {
     dispatch(logoutHandler());
@@ -23,6 +24,7 @@ const Logout = () => {
 
   useEffect(() => {
     if (success) {
+      clearUser();
       router.push('/se-connecter');
     }
   }, [success, router]);

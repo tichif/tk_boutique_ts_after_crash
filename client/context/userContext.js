@@ -10,6 +10,7 @@ const MeContext = createContext({
   loading: true,
   error: null,
   refetchUser: () => {},
+  clearUser: () => {},
 });
 
 const MeContextProvider = ({ children }) => {
@@ -59,8 +60,14 @@ const MeContextProvider = ({ children }) => {
     setShouldRefetch(true);
   }
 
+  function clearUser() {
+    setUser(null);
+  }
+
   return (
-    <MeContext.Provider value={{ user, error, loading, refetchUser }}>
+    <MeContext.Provider
+      value={{ user, error, loading, refetchUser, clearUser }}
+    >
       {loading ? <Loader /> : children}
     </MeContext.Provider>
   );
