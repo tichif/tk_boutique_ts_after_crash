@@ -364,11 +364,13 @@ export const resetPasswordHandler = asyncHandler(
 );
 
 // @route   POST /api/v2/auth/logout
-// @desc    Get user's profile
+// @desc    log out yser
 // @access  Private
 export const logoutUserHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     res.locals.user = undefined;
+
+    res.clearCookie('tkCookie');
 
     return res.status(200).json({
       success: true,
