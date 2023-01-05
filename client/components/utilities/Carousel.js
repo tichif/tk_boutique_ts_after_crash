@@ -29,6 +29,7 @@ const CarouselComponent = () => {
       className='bg-dark'
       nextLabel='Suivant'
       prevLabel='Précédent'
+      indicators={false}
     >
       {products &&
         products.map((product) => (
