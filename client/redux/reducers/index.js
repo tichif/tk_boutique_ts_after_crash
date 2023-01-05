@@ -35,6 +35,7 @@ import {
   currencyUpdateReducer,
   currencyMakePrincipalReducer,
   currencyUnMakePrincipalReducer,
+  currencyPrincipalReducer,
 } from './currency';
 
 import {
@@ -87,6 +88,7 @@ const reducers = combineReducers({
   currencyUpdate: currencyUpdateReducer,
   currencyMakePrincipal: currencyMakePrincipalReducer,
   currencyUnMakePrincipal: currencyUnMakePrincipalReducer,
+  currencyPrincipal: currencyPrincipalReducer,
   categoryList: categoryListReducer,
   categoryCreate: categoryCreateReducer,
   categoryDetail: categoryDetailReducer,

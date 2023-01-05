@@ -16,6 +16,9 @@ import {
   CURRENCY_MAKE_PRINCIPAL_FAILED,
   CURRENCY_MAKE_PRINCIPAL_REQUEST,
   CURRENCY_MAKE_PRINCIPAL_SUCCESS,
+  CURRENCY_PRINCIPAL_FAILED,
+  CURRENCY_PRINCIPAL_REQUEST,
+  CURRENCY_PRINCIPAL_SUCCESS,
   CURRENCY_UNMAKE_PRINCIPAL_FAILED,
   CURRENCY_UNMAKE_PRINCIPAL_REQUEST,
   CURRENCY_UNMAKE_PRINCIPAL_SUCCESS,
@@ -184,6 +187,30 @@ export const currencyUnMakePrincipalReducer = (state = {}, action) => {
         success: true,
       };
     case CURRENCY_UNMAKE_PRINCIPAL_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const currencyPrincipalReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CURRENCY_PRINCIPAL_REQUEST:
+      return {
+        loading: true,
+      };
+    case CURRENCY_PRINCIPAL_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        currency: action.payload,
+      };
+    case CURRENCY_PRINCIPAL_FAILED:
       return {
         loading: false,
         error: action.payload,

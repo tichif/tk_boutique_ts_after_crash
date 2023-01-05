@@ -16,6 +16,9 @@ import {
   CURRENCY_MAKE_PRINCIPAL_FAILED,
   CURRENCY_MAKE_PRINCIPAL_REQUEST,
   CURRENCY_MAKE_PRINCIPAL_SUCCESS,
+  CURRENCY_PRINCIPAL_FAILED,
+  CURRENCY_PRINCIPAL_REQUEST,
+  CURRENCY_PRINCIPAL_SUCCESS,
   CURRENCY_UNMAKE_PRINCIPAL_FAILED,
   CURRENCY_UNMAKE_PRINCIPAL_REQUEST,
   CURRENCY_UNMAKE_PRINCIPAL_SUCCESS,
@@ -208,6 +211,28 @@ export const unmakeCurrencyPrincipalHandler = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CURRENCY_UNMAKE_PRINCIPAL_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// get currency principal
+export const getPrincipalCurrencyHandler = () => async (dispatch) => {
+  try {
+    dispatch({ type: CURRENCY_PRINCIPAL_REQUEST });
+
+    const { data } = await axios.get(`${SERVER_API}/currencies/principal`);
+
+    dispatch({
+      type: CURRENCY_PRINCIPAL_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CURRENCY_PRINCIPAL_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error
