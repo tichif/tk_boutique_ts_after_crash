@@ -12,7 +12,7 @@ const Product = ({ product, currency }) => {
       <Card.Body>
         <Link href={`/article/${product.slug}`}>
           <Card.Title as='h4'>
-            <strong>{Product.name}</strong>
+            <strong>{product.name}</strong>
           </Card.Title>
         </Link>
         <Card.Text as='h6'>{product.category.name}</Card.Text>
@@ -24,7 +24,7 @@ const Product = ({ product, currency }) => {
           )}
         </Card.Text>
         <Card.Text as='h6'>
-          {(product && product.qty > 0) || product.variant[0].qty
+          {(product && product.qty > 0) || product.variant[0]?.qty
             ? 'Disponible'
             : 'Non Disponible'}
         </Card.Text>
