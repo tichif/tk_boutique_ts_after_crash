@@ -62,17 +62,18 @@ const Shop = () => {
       <Button className='mr-3 mb-3' onClick={() => chooseCategoryHandler('')}>
         Tous les articles
       </Button>
-      {categories
-        .filter((category) => category.productsCount > 0)
-        .map((category) => (
-          <Button
-            className='mx-3 mb-3'
-            key={category._id}
-            onClick={() => chooseCategoryHandler(category._id)}
-          >
-            {category.name}
-          </Button>
-        ))}
+      {categories &&
+        categories
+          .filter((category) => category.productsCount > 0)
+          .map((category) => (
+            <Button
+              className='mx-3 mb-3'
+              key={category._id}
+              onClick={() => chooseCategoryHandler(category._id)}
+            >
+              {category.name}
+            </Button>
+          ))}
 
       {/* products */}
       <Row className='mt-3'>
