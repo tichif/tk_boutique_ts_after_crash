@@ -13,7 +13,7 @@ const CarouselComponent = () => {
 
   const { currency, error } = useSelector((state) => state.currencyPrincipal);
   const { products, error: errorProducts } = useSelector(
-    (state) => state.productList
+    (state) => state.productCarouselList
   );
 
   useEffect(() => {

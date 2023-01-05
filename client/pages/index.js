@@ -1,7 +1,10 @@
 import Layout from '../components/Layout';
 import { wrapper } from '../redux/store';
 import { getPrincipalCurrencyHandler } from '../redux/actions/currency';
-import { listProductsHandler } from '../redux/actions/product';
+import {
+  listProductsHandler,
+  listCarouselProductsHandler,
+} from '../redux/actions/product';
 import Carousel from '../components/utilities/Carousel';
 
 function Home() {
@@ -14,12 +17,13 @@ function Home() {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
-    await store.dispatch(
-      listProductsHandler(
-        'select=name,price,slug,variant,photoPrincipal&limit=4'
-      )
-    );
+    // store.dispatch(
+    //   listProductsHandler(
+    //     'select=name,price,slug,variant,photoPrincipal&limit=4'
+    //   )
+    // );
     await store.dispatch(getPrincipalCurrencyHandler());
+    await store.dispatch(listCarouselProductsHandler());
   }
 );
 
