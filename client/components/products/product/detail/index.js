@@ -14,6 +14,8 @@ import { getAmountInCurrency } from '../../../../utils/number';
 const ProductDetail = () => {
   const dispatch = useDispatch();
 
+  const router = useRouter();
+
   const { error, product } = useSelector((state) => state.productDetail);
   const { error: errorCurrency, currency } = useSelector(
     (state) => state.currencyPrincipal
@@ -73,7 +75,17 @@ const ProductDetail = () => {
   }
 
   // add product to cart
-  function addToCart() {}
+  function addToCart() {
+    if (variantId) {
+      router.push(
+        `/panier?productId=${product._id}&variantId=${variantId}&color=${color}&size=${size}&qty=${qtyChosen}`
+      );
+    } else {
+      router.push(
+        `/panier?productId=${product._id}&color=${color}&size=${size}&qty=${qtyChosen}`
+      );
+    }
+  }
 
   // click variant
   function clickHandler(variant) {
