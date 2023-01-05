@@ -8,12 +8,12 @@ import { resetNotifications } from '../../redux/actions/currency';
 import Image from './Image';
 import { getAmountInCurrency } from '../../utils/number';
 
-const Carousel = () => {
+const CarouselComponent = () => {
   const dispatch = useDispatch();
 
   const { currency, error } = useSelector((state) => state.currencyPrincipal);
   const { products, error: errorProducts } = useSelector(
-    (state) => state.currencyPrincipal
+    (state) => state.productList
   );
 
   useEffect(() => {
@@ -24,7 +24,12 @@ const Carousel = () => {
   }, [error, errorProducts, dispatch]);
 
   return (
-    <Carousel pause='hover' className='bg-dark'>
+    <Carousel
+      pause='hover'
+      className='bg-dark'
+      nextLabel='Suivant'
+      prevLabel='Précédent'
+    >
       {products &&
         products.map((product) => (
           <Carousel.Item key={product._id}>
@@ -53,4 +58,4 @@ const Carousel = () => {
   );
 };
 
-export default Carousel;
+export default CarouselComponent;
