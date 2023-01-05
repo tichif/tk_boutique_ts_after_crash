@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(express.json({ limit: '50mb' }));
 app.use(hpp());
 app.use(helmet());
-app.use(compression());
+// app.use(compression());
 app.use(limiter);
 app.use(
   cors({
