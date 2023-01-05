@@ -1,4 +1,6 @@
 import {
+  PRODUCT_CAROUSEL_LIST_FAILED,
+  PRODUCT_CAROUSEL_LIST_SUCCESS,
   PRODUCT_CREATE_FAILED,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_RESET,
@@ -66,6 +68,30 @@ export const productListReducer = (state = { products: [] }, action) => {
         products: action.payload.data,
       };
     case PRODUCT_LIST_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product carousel list
+export const productCarouselListReducer = (
+  state = { products: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_CAROUSEL_LIST_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        products: action.payload,
+      };
+    case PRODUCT_CAROUSEL_LIST_FAILED:
       return {
         loading: false,
         error: action.payload,

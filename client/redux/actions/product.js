@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 import {
+  PRODUCT_CAROUSEL_LIST_FAILED,
+  PRODUCT_CAROUSEL_LIST_SUCCESS,
   PRODUCT_CREATE_FAILED,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
@@ -58,9 +60,7 @@ export const listProductsHandler =
         link = link.concat(`&page=${page}`);
       }
 
-      const { data } = await axios.get(link, {
-        withCredentials: true,
-      });
+      const { data } = await axios.get(link);
 
       dispatch({
         type: PRODUCT_LIST_SUCCESS,
@@ -76,6 +76,28 @@ export const listProductsHandler =
       });
     }
   };
+
+// list products action
+export const listCarouselProductsHandler = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get(
+      `${SERVER_API}/products?select=name,price,slug,variant,photoPrincipal&limit=4&sort=createdAt`
+    );
+
+    dispatch({
+      type: PRODUCT_CAROUSEL_LIST_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_CAROUSEL_LIST_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
 
 // list products with CategoryId action
 export const listProductsWithCategoryHandler =
