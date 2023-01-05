@@ -15,8 +15,10 @@ const Product = ({ product, currency }) => {
             <strong>{product.name}</strong>
           </Card.Title>
         </Link>
-        <Card.Text as='h6'>{product.category.name}</Card.Text>
-        <Card.Text as='h6'>
+        <Card.Text as='h6' className='mb-2'>
+          {product.category.name}
+        </Card.Text>
+        <Card.Text as='h6' className='mb-2'>
           HTG {product.price ? product.price : product.variant[0]?.price} -{' '}
           {getAmountInCurrency(
             product.price ? product.price : product.variant[0]?.price,
@@ -24,9 +26,11 @@ const Product = ({ product, currency }) => {
           )}
         </Card.Text>
         <Card.Text as='h6'>
-          {(product && product.qty > 0) || product.variant[0]?.qty
-            ? 'Disponible'
-            : 'Non Disponible'}
+          {(product && product.qty > 0) || product.variant[0]?.qty ? (
+            <p>Disponible</p>
+          ) : (
+            <p className='text-danger'>Non Disponible</p>
+          )}
         </Card.Text>
       </Card.Body>
     </Card>

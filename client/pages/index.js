@@ -47,7 +47,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
     store.dispatch(
       await listProductsHandler(
-        'select=name,price,slug,variant,photoPrincipal&limit=8'
+        'select=name,price,slug,variant,photoPrincipal,qty&limit=8'
       )
     );
     await store.dispatch(getPrincipalCurrencyHandler());
