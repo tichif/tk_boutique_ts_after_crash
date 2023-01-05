@@ -105,6 +105,95 @@ const ProductDetail = () => {
                 />
               )}
             </Col>
+            <Col md={3}>
+              <ListGroup variant='flush'>
+                <ListGroup.Item>
+                  <h3>{product && product.name}</h3>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <p>
+                    Catégorie:{' '}
+                    {product &&
+                      product.category &&
+                      convertMultipleWords(product.category.name)}
+                  </p>
+                </ListGroup.Item>
+                {product && product.description && (
+                  <ListGroup.Item>
+                    <h3>Description</h3>
+                    <p>{product.description}</p>
+                  </ListGroup.Item>
+                )}
+                {product && product.variant.length > 0 && (
+                  <ListGroup.Item>
+                    <h3>Variant</h3>
+                    {product.variant.map((v) => (
+                      <Button
+                        key={v._id}
+                        onClick={() => clickHandler(v)}
+                        className='btn-block'
+                      >
+                        {v.color} / {v.size}
+                      </Button>
+                    ))}
+                  </ListGroup.Item>
+                )}
+                <ListGroup.Item>
+                  <h3>Photos</h3>
+                  <Row>
+                    {imagePrincipal && (
+                      <Col md={3} onClick={() => photoClicked(imagePrincipal)}>
+                        <Image
+                          value={imagePrincipal.url}
+                          width={imagePrincipal.width / 15}
+                          height={imagePrincipal.height / 15}
+                          alt={product && product.name}
+                        />
+                      </Col>
+                    )}
+                  </Row>
+                  <Row>
+                    {secondaryImages.length > 0
+                      ? secondaryImages.map((image) => (
+                          <Col
+                            md={6}
+                            key={image.public_id}
+                            onClick={() => photoClicked(image)}
+                            className='my-3'
+                          >
+                            <Image
+                              value={image.url}
+                              width={image.width / 15}
+                              height={image.height / 15}
+                              alt={product && product.name}
+                            />
+                          </Col>
+                        ))
+                      : product &&
+                        product.photosSecondaries &&
+                        product.photosSecondaries.length > 0 &&
+                        product.photosSecondaries.map((image) => (
+                          <Col
+                            md={6}
+                            key={image.public_id}
+                            onClick={() => photoClicked(image)}
+                            className='my-3'
+                          >
+                            <Image
+                              value={image.url}
+                              width={image.width / 15}
+                              height={image.height / 15}
+                              alt={product && product.name}
+                            />
+                          </Col>
+                        ))}
+                    <p className='mt-3'>
+                      Cliquer sur une image pour l'afficher.
+                    </p>
+                  </Row>
+                </ListGroup.Item>
+              </ListGroup>
+            </Col>
           </Row>
         </>
       )}
