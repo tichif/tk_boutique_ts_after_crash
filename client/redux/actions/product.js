@@ -181,6 +181,28 @@ export const getProductHandler = (id) => async (dispatch) => {
   }
 };
 
+// get product by slug action
+export const getProductBySlugHandler = (slug) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_DETAIL_REQUEST });
+
+    const { data } = await axios.get(`${SERVER_API}/products/get/${slug}`);
+
+    dispatch({
+      type: PRODUCT_DETAIL_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_DETAIL_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
 // update product action
 export const updateProductHandler = (id, product) => async (dispatch) => {
   try {
