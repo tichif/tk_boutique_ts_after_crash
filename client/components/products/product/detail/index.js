@@ -15,6 +15,9 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
 
   const { error, product } = useSelector((state) => state.productDetail);
+  const { error: errorCurrency, currency } = useSelector(
+    (state) => state.currencyPrincipal
+  );
 
   const [imageToShow, setImageToShow] = useState();
   const [alt, setAlt] = useState('TK Boutique');
@@ -25,13 +28,14 @@ const ProductDetail = () => {
   const [variantId, setVariantId] = useState();
   const [secondaryImages, setSecondaryImages] = useState([]);
   const [imagePrincipal, setImagePrincipal] = useState();
+  const [qtyChosen, setQtyChosen] = useState(1);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorCurrency) {
+      toast.error(error || errorCurrency);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorCurrency]);
 
   useEffect(() => {
     if (product) {
@@ -80,6 +84,7 @@ const ProductDetail = () => {
     setVariantId(variant._id);
     setImagePrincipal(variant.photoPrincipal);
     setSecondaryImages(variant.photosSecondaries);
+    setQtyChosen(1);
   }
 
   return (
@@ -193,6 +198,76 @@ const ProductDetail = () => {
                   </Row>
                 </ListGroup.Item>
               </ListGroup>
+            </Col>
+            <Col md={3}>
+              <Card>
+                <ListGroup variant='flush'>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Prix: </Col>
+                      <Col>
+                        HTG {price} -{' '}
+                        {currency && getAmountInCurrency(price, currency)}
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Status</Col>
+                      <Col>
+                        {qty > 0 ? (
+                          <span>Disponible</span>
+                        ) : (
+                          <span className='text-danger'>Non Disponible</span>
+                        )}
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Couleur</Col>
+                      <Col>{color}</Col>
+                    </Row>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Taille</Col>
+                      <Col>{size}</Col>
+                    </Row>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>
+                        <Form>
+                          <Form.Label>Quantité</Form.Label>
+                          <Form.Control
+                            type='number'
+                            min='1'
+                            max={qty}
+                            disabled={qty >= 1 ? false : true}
+                            value={qtyChosen}
+                            onChange={(e) => setQtyChosen(e.target.value)}
+                          />
+                        </Form>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    <Button
+                      className='btn btn-primary btn-block'
+                      disabled={qty >= 1 && qtyChosen >= 1 ? false : true}
+                      onClick={addToCart}
+                    >
+                      Ajouter au panier
+                    </Button>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card>
             </Col>
           </Row>
         </>
