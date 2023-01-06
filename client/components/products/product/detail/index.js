@@ -7,9 +7,13 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Image from '../../../utilities/Image';
-import { resetNotifications } from '../../../../redux/actions/product';
+import {
+  resetNotifications,
+  getRelatedProductsHandler,
+} from '../../../../redux/actions/product';
 import { convertMultipleWords } from '../../../../utils/string';
 import { getAmountInCurrency } from '../../../../utils/number';
+import ProductRelated from '../../related';
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
@@ -19,6 +23,9 @@ const ProductDetail = () => {
   const { error, product } = useSelector((state) => state.productDetail);
   const { error: errorCurrency, currency } = useSelector(
     (state) => state.currencyPrincipal
+  );
+  const { loading, errorRelated, products } = useSelector(
+    (state) => state.productRelatedList
   );
 
   const [imageToShow, setImageToShow] = useState();
@@ -33,11 +40,11 @@ const ProductDetail = () => {
   const [qtyChosen, setQtyChosen] = useState(1);
 
   useEffect(() => {
-    if (error || errorCurrency) {
-      toast.error(error || errorCurrency);
+    if (error || errorCurrency || errorRelated) {
+      toast.error(error || errorCurrency || errorRelated);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch, errorCurrency]);
+  }, [error, dispatch, errorCurrency, errorRelated]);
 
   useEffect(() => {
     if (product) {
@@ -67,6 +74,12 @@ const ProductDetail = () => {
         setColor('');
         setSize('');
       }
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (product) {
+      dispatch(getRelatedProductsHandler(product._id, product.category._id));
     }
   }, [product]);
 
@@ -282,6 +295,12 @@ const ProductDetail = () => {
               </Card>
             </Col>
           </Row>
+          <h3 className='mt-5 text-center'>Dans la même catégorie</h3>
+          <ProductRelated
+            loading={loading}
+            products={products}
+            currency={currency}
+          />
         </>
       )}
     </>

@@ -24,6 +24,9 @@ import {
   PRODUCT_PHOTO_LIST_FAILED,
   PRODUCT_PHOTO_LIST_REQUEST,
   PRODUCT_PHOTO_LIST_SUCCESS,
+  PRODUCT_RELATED_LIST_FAILED,
+  PRODUCT_RELATED_LIST_REQUEST,
+  PRODUCT_RELATED_LIST_SUCCESS,
   PRODUCT_UPDATE_FAILED,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
@@ -545,7 +548,7 @@ export const deleteProductVariantPhotoHandler =
 export const getRelatedProductsHandler =
   (id, categoryId) => async (dispatch) => {
     try {
-      dispatch({ type: PRODUCT_DELETE_REQUEST });
+      dispatch({ type: PRODUCT_RELATED_LIST_REQUEST });
 
       const { data } = await axios.get(
         `${SERVER_API}/products/${id}/${categoryId}/related`,
@@ -555,12 +558,12 @@ export const getRelatedProductsHandler =
       );
 
       dispatch({
-        type: PRODUCT_DELETE_SUCCESS,
+        type: PRODUCT_RELATED_LIST_SUCCESS,
         payload: data.data,
       });
     } catch (error) {
       dispatch({
-        type: PRODUCT_DELETE_FAILED,
+        type: PRODUCT_RELATED_LIST_FAILED,
         payload:
           error.response && error.response.data.error
             ? error.response.data.error

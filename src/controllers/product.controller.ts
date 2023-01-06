@@ -440,8 +440,6 @@ export const getProductsRelatedHandler = asyncHandler(
     const { productId, categoryId } = req.params;
     const key = req.url;
 
-    console.log(key);
-
     const cachedData = await client.get(key);
 
     // cached data
@@ -455,7 +453,16 @@ export const getProductsRelatedHandler = asyncHandler(
     const products = await findProductsByQuery(
       { _id: { $ne: productId }, category: categoryId },
       {},
-      ['name', 'qty', 'price', 'color', 'size', 'variant', 'photoPrincipal']
+      [
+        'name',
+        'qty',
+        'price',
+        'color',
+        'size',
+        'variant',
+        'photoPrincipal',
+        'slug',
+      ]
     );
 
     await client.set(key, JSON.stringify(products), {
