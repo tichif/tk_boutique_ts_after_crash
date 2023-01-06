@@ -6,6 +6,9 @@ import {
   GET_CART,
   GET_TOTAL_CART,
   GET_TOTAL_ITEM_IN_CART,
+  LOG_ERROR,
+  CLEAR_ERROR,
+  CLEAR_CART,
 } from '../redux/constants/cart';
 
 const CartContext = createContext();
@@ -97,6 +100,25 @@ function CartContextProvider({ children }) {
         return {
           ...state,
           cartTotal: state.cart.reduce((acc, curr) => acc + curr.qty, 0),
+        };
+
+      case LOG_ERROR:
+        return {
+          ...state,
+          error: action.payload,
+        };
+
+      case CLEAR_ERROR:
+        return {
+          ...state,
+          error: null,
+        };
+
+      case CLEAR_ERROR:
+        return {
+          ...state,
+          error: null,
+          cart: [],
         };
       default:
         return state;
