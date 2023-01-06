@@ -8,6 +8,7 @@ import '../styles/bootstrap.min.css';
 import { pageView } from '../hooks/useGATracker';
 import { wrapper } from '../redux/store';
 import { MeContextProvider } from '../context/userContext';
+import { CartContextProvider } from '../context/cartContext';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <MeContextProvider>
-        <Component {...pageProps} />
+        <CartContextProvider>
+          <Component {...pageProps} />
+        </CartContextProvider>
       </MeContextProvider>
       <ToastContainer />
     </>
