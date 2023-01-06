@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { createContext, useReducer, useContext } from 'react';
 
 import {
@@ -11,6 +12,8 @@ import {
   CLEAR_CART,
 } from '../redux/constants/cart';
 
+const SERVER_API = process.env.NEXT_PUBLIC_SERVER_API;
+
 const CartContext = createContext();
 
 function CartContextProvider({ children }) {
@@ -21,7 +24,7 @@ function CartContextProvider({ children }) {
   };
 
   function reducer(state, action) {
-    switch (action.payload) {
+    switch (action.type) {
       case GET_CART:
         return {
           ...state,
@@ -29,6 +32,7 @@ function CartContextProvider({ children }) {
         };
       case ADD_TO_CART:
         const product = action.payload;
+        console.log(product);
         const cartCopy = [...state.cart];
         const existingProduct = cartCopy.find(
           (item) => item.productId === product.productId
@@ -125,10 +129,50 @@ function CartContextProvider({ children }) {
     }
   }
 
-  const [state, action] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  async function addToCart(productId, variantId, qty) {
+    try {
+      const { data } = await axios.get(`${SERVER_API}/products/${productId}`);
+      const product = data.data;
+
+      const cartProduct = {
+        key: new Date().getTime(),
+        productId,
+        variantId,
+        name: product.name,
+        price: product.price
+          ? product.price
+          : product.variant.find((v) => v._id === variantId).price,
+        photo: product.photoPrincipal
+          ? product.photoPrincipal.url
+          : product.variant.find((v) => v._id === variantId).photoPrincipal.url,
+        qty: parseInt(qty),
+        size: product.size
+          ? product.size
+          : product.variant.find((v) => v._id === variantId).size,
+        color: product.color
+          ? product.color
+          : product.variant.find((v) => v._id === variantId).color,
+      };
+
+      dispatch({
+        type: ADD_TO_CART,
+        payload: cartProduct,
+      });
+    } catch (error) {
+      dispatch({
+        type: LOG_ERROR,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  }
 
   return (
-    <CartContext.Provider value={{ state, action }}>
+    <CartContext.Provider value={{ state, addToCart }}>
       {children}
     </CartContext.Provider>
   );

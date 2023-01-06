@@ -64,6 +64,8 @@ import {
   productCarouselListReducer,
 } from './product';
 
+import { cartReducer } from './cart';
+
 const reducers = combineReducers({
   contact: contactReducer,
   userRegister: userRegisterReducer,
@@ -110,6 +112,7 @@ const reducers = combineReducers({
   productPhotoCreate: productPhotoCreateReducer,
   productPhotoDelete: productPhotoDeleteReducer,
   productRelatedList: productRelatedListReducer,
+  cart: cartReducer,
 });
 
 export default reducers;
