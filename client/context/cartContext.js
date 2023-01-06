@@ -33,8 +33,8 @@ function CartContextProvider({ children }) {
       case ADD_TO_CART:
         const product = action.payload;
         console.log(product);
-        const cartCopy = [...state.cart];
-        const existingProduct = cartCopy.find(
+
+        const existingProduct = state.cart.find(
           (item) => item.productId === product.productId
         );
 
@@ -48,7 +48,7 @@ function CartContextProvider({ children }) {
             existingProduct.variantId === product.variantId
           ) {
             existingProduct.qty += product.qty;
-            cartCopy.map((item) =>
+            state.cart.map((item) =>
               item.key === existingProduct.key ? existingProduct : item
             );
           }
@@ -59,27 +59,27 @@ function CartContextProvider({ children }) {
             product.variantId &&
             existingProduct.variantId !== product.variantId
           ) {
-            cartCopy = [...cartCopy, product];
+            state.cart = [...state.cart, product];
           }
           // if variantId doesn't exist existingProduct
           else if (!existingProduct.variantId) {
             existingProduct.qty += product.qty;
-            cartCopy.map((item) =>
+            state.cart.map((item) =>
               item.key === existingProduct.key ? existingProduct : item
             );
           }
         } else {
           // if product doesn't exists
-          cartCopy = [...cartCopy, product];
+          state.cart = [...state.cart, product];
         }
 
         // add cart to localStorage
-        localStorage.set('tk_cart', JSON.stringify(cartCopy));
+        localStorage.setItem('tk_cart', JSON.stringify(state.cart));
 
         // return state
         return {
           ...state,
-          cart: [...cartCopy],
+          cart: [...state.cart],
         };
 
       case REMOVE_TO_CART:
