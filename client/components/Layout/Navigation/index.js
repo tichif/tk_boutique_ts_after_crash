@@ -58,6 +58,13 @@ const Navigation = () => {
               <i className='fas fa-shopping-basket'></i> Boutique
             </Nav.Link>
 
+            <Nav.Link
+              onClick={() => handleClick('/panier')}
+              active={router.pathname === '/panier' ? true : false}
+            >
+              <i className='fas fa-shopping-cart'></i> Panier
+            </Nav.Link>
+
             {/* authenticated && admin*/}
             {!loading && user && user.type === 'admin' && (
               <>
