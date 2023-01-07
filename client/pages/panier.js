@@ -41,7 +41,7 @@ const Panier = () => {
     if (productId || qty) {
       addToCart(productId, variantId, qty);
     }
-  }, [productId, variantId, qty]);
+  }, [productId]);
 
   function deleteHandler(key) {
     if (window.confirm('Etes vous sur vouloir supprimer cet article ?')) {
