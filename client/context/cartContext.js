@@ -30,7 +30,6 @@ function CartContextProvider({ children }) {
         };
       case ADD_TO_CART:
         const product = action.payload;
-        console.log(product);
 
         const existingProduct = state.cart.find(
           (item) => item.productId === product.productId

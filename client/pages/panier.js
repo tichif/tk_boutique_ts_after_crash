@@ -3,6 +3,7 @@ import { Row, Col, ListGroup, Button, Card, Alert } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import Layout from '../components/Layout';
 import { useMe } from '../context/userContext';
@@ -48,9 +49,8 @@ const Panier = () => {
   useEffect(() => {
     if (productId || qty) {
       addToCart(productId, variantId, qty);
-      console.log('ok');
     }
-  }, []);
+  }, [productId, variantId, qty]);
 
   function deleteHandler(key) {
     if (window.confirm('Etes vous sur(e) vouloir supprimer cet article ?')) {

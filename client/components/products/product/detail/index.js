@@ -67,6 +67,7 @@ const ProductDetail = () => {
         setColor(product.variant[0].color);
         setSize(product.variant[0].size);
         setSecondaryImages(product.variant[0].photosSecondaries);
+        setVariantId(product.variant[0]._id);
       } else {
         // no variants and price
         setPrice(0);
