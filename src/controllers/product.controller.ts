@@ -362,6 +362,7 @@ export const getProductHandler = asyncHandler(
       'variant',
       'photoPrincipal',
       'photosSecondaries',
+      'slug',
     ]);
 
     if (!product) {
@@ -411,6 +412,7 @@ export const getProductBySlugHandler = asyncHandler(
       'variant',
       'photoPrincipal',
       'photosSecondaries',
+      'slug',
     ]);
 
     if (!product) {

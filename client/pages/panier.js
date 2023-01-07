@@ -23,9 +23,10 @@ const Panier = () => {
   const dispatch = useDispatch();
 
   const {
-    state: { cart },
+    state: { cart, error: errorCart },
     addToCart,
     removeToCart,
+    clearError,
   } = useCart();
 
   const { currency, error } = useSelector((state) => state.currencyPrincipal);
@@ -38,13 +39,21 @@ const Panier = () => {
   }, [error, dispatch]);
 
   useEffect(() => {
+    if (errorCart) {
+      toast.error(errorCart);
+      clearError();
+    }
+  }, [errorCart, dispatch]);
+
+  useEffect(() => {
     if (productId || qty) {
       addToCart(productId, variantId, qty);
+      console.log('ok');
     }
-  }, [productId]);
+  }, []);
 
   function deleteHandler(key) {
-    if (window.confirm('Etes vous sur vouloir supprimer cet article ?')) {
+    if (window.confirm('Etes vous sur(e) vouloir supprimer cet article ?')) {
       removeToCart(key);
     }
   }

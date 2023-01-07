@@ -171,8 +171,22 @@ function CartContextProvider({ children }) {
     });
   }
 
+  function clearError() {
+    dispatch({
+      type: CLEAR_ERROR,
+    });
+  }
+
+  function clearCart() {
+    dispatch({
+      type: CLEAR_CART,
+    });
+  }
+
   return (
-    <CartContext.Provider value={{ state, addToCart, removeToCart }}>
+    <CartContext.Provider
+      value={{ state, addToCart, removeToCart, clearError, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
