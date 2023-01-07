@@ -83,8 +83,9 @@ function CartContextProvider({ children }) {
         };
 
       case REMOVE_TO_CART:
-        const cartItem = [...state.cart];
-        cartItem = cartItem.filter((item) => item.key !== action.payload);
+        const cartItem = state.cart.filter(
+          (item) => item.key !== action.payload
+        );
         localStorage.set('tk_cart', JSON.stringify(cartItem));
         return {
           ...state,
@@ -103,7 +104,7 @@ function CartContextProvider({ children }) {
       case GET_TOTAL_ITEM_IN_CART:
         return {
           ...state,
-          cartTotal: state.cart.reduce((acc, curr) => acc + curr.qty, 0),
+          cartTotalItem: state.cart.reduce((acc, curr) => acc + curr.qty, 0),
         };
 
       case LOG_ERROR:
@@ -141,12 +142,21 @@ function CartContextProvider({ children }) {
         productId,
         variantId,
         name: product.name,
+        slug: product.slug,
         price: product.price
           ? product.price
           : product.variant.find((v) => v._id === variantId).price,
         photo: product.photoPrincipal
           ? product.photoPrincipal.url
           : product.variant.find((v) => v._id === variantId).photoPrincipal.url,
+        height: product.photoPrincipal
+          ? product.photoPrincipal.height
+          : product.variant.find((v) => v._id === variantId).photoPrincipal
+              .height,
+        width: product.photoPrincipal
+          ? product.photoPrincipal.width
+          : product.variant.find((v) => v._id === variantId).photoPrincipal
+              .width,
         qty: parseInt(qty),
         size: product.size
           ? product.size
@@ -154,6 +164,7 @@ function CartContextProvider({ children }) {
         color: product.color
           ? product.color
           : product.variant.find((v) => v._id === variantId).color,
+        date: new Date(),
       };
 
       dispatch({
