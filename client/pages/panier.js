@@ -47,7 +47,7 @@ const Panier = () => {
   }, [errorCart, dispatch]);
 
   useEffect(() => {
-    if (productId || qty) {
+    if (productId && qty) {
       addToCart(productId, variantId, qty);
     }
   }, [productId, variantId, qty]);
