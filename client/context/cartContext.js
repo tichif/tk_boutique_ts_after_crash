@@ -5,8 +5,6 @@ import {
   ADD_TO_CART,
   REMOVE_TO_CART,
   GET_CART,
-  GET_TOTAL_CART,
-  GET_TOTAL_ITEM_IN_CART,
   LOG_ERROR,
   CLEAR_ERROR,
   CLEAR_CART,
@@ -91,22 +89,6 @@ function CartContextProvider({ children }) {
           ...state,
           cart: cartItem,
         };
-
-      case GET_TOTAL_CART:
-        return {
-          ...state,
-          cartTotal: state.cart.reduce(
-            (acc, curr) => acc + curr.qty * curr.price,
-            0
-          ),
-        };
-
-      case GET_TOTAL_ITEM_IN_CART:
-        return {
-          ...state,
-          cartTotalItem: state.cart.reduce((acc, curr) => acc + curr.qty, 0),
-        };
-
       case LOG_ERROR:
         return {
           ...state,
@@ -119,7 +101,7 @@ function CartContextProvider({ children }) {
           error: null,
         };
 
-      case CLEAR_ERROR:
+      case CLEAR_CART:
         return {
           ...state,
           error: null,
