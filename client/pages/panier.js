@@ -23,6 +23,8 @@ const Panier = () => {
 
   const dispatch = useDispatch();
 
+  const { user } = useMe();
+
   const {
     state: { cart, error: errorCart },
     addToCart,
@@ -67,6 +69,15 @@ const Panier = () => {
     () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
     [cart]
   );
+
+  function checkoutHandler() {
+    console.log('Checkout');
+  }
+
+  function orderHandler() {
+    console.log('Order handler');
+  }
+
   return (
     <Layout title='Panier'>
       <Row>
@@ -140,6 +151,32 @@ const Panier = () => {
                   HTG ({totalPrice.toFixed(2)}-{' '}
                   {getAmountInCurrency(totalPrice, currency)})
                 </h4>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {user && user.type !== 'admin' && (
+                  <Button
+                    type='button'
+                    className='btn-block'
+                    disabled={cart.length === 0}
+                    onClick={checkoutHandler}
+                  >
+                    Commander
+                  </Button>
+                )}
+              </ListGroup.Item>
+              {/* Amin button */}
+              <ListGroup.Item>
+                {user && user.type === 'admin' && (
+                  <Button
+                    variant='success'
+                    type='button'
+                    className='btn-block'
+                    disabled={cart.length === 0}
+                    onClick={orderHandler}
+                  >
+                    Payer
+                  </Button>
+                )}
               </ListGroup.Item>
             </ListGroup>
           </Card>
