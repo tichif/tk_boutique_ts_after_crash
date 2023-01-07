@@ -25,6 +25,7 @@ const Panier = () => {
   const {
     state: { cart },
     addToCart,
+    removeToCart,
   } = useCart();
 
   const { currency, error } = useSelector((state) => state.currencyPrincipal);
@@ -46,12 +47,17 @@ const Panier = () => {
     if (window.confirm('Etes vous sur vouloir supprimer cet article ?')) {
       console.log(key);
     }
-
-    const totalProduct = useMemo(
-      () => cart.reduce((acc, item) => acc + item.qty, 0),
-      [cart]
-    );
   }
+
+  const totalProduct = useMemo(
+    () => cart.reduce((acc, item) => acc + item.qty, 0),
+    [cart]
+  );
+
+  const totalPrice = useMemo(
+    () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
+    [cart]
+  );
   return (
     <Layout title='Panier'>
       <Row>
@@ -116,44 +122,14 @@ const Panier = () => {
             <ListGroup variant='flush'>
               <ListGroup.Item>
                 <h4 style={{ fontSize: '1.1rem', padding: '0.5rem 0' }}>
-                  Sous-total (
-                  {useMemo(
-                    () => cart.reduce((acc, item) => acc + item.qty, 0),
-                    [cart]
-                  )}{' '}
-                  {useMemo(
-                    () => cart.reduce((acc, item) => acc + item.qty, 0),
-                    [cart]
-                  ) > 1
-                    ? 'articles'
-                    : 'article'}
-                  )
+                  Sous-total ({totalProduct}{' '}
+                  {totalProduct > 1 ? 'articles' : 'article'})
                 </h4>
               </ListGroup.Item>
               <ListGroup.Item>
                 <h4 style={{ fontSize: '1.1rem', padding: '0.5rem 0' }}>
-                  HTG (
-                  {useMemo(
-                    () =>
-                      cart.reduce(
-                        (acc, item) => acc + item.qty * item.price,
-                        0
-                      ),
-                    [cart]
-                  ).toFixed(2)}
-                  -{' '}
-                  {getAmountInCurrency(
-                    useMemo(
-                      () =>
-                        cart.reduce(
-                          (acc, item) => acc + item.qty * item.price,
-                          0
-                        ),
-                      [cart]
-                    ),
-                    currency
-                  )}
-                  )
+                  HTG ({totalPrice.toFixed(2)}-{' '}
+                  {getAmountInCurrency(totalPrice, currency)})
                 </h4>
               </ListGroup.Item>
             </ListGroup>
