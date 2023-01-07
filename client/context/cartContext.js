@@ -86,7 +86,7 @@ function CartContextProvider({ children }) {
         const cartItem = state.cart.filter(
           (item) => item.key !== action.payload
         );
-        localStorage.set('tk_cart', JSON.stringify(cartItem));
+        localStorage.setItem('tk_cart', JSON.stringify(cartItem));
         return {
           ...state,
           cart: cartItem,

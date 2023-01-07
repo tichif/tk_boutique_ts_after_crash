@@ -45,7 +45,7 @@ const Panier = () => {
 
   function deleteHandler(key) {
     if (window.confirm('Etes vous sur vouloir supprimer cet article ?')) {
-      console.log(key);
+      removeToCart(key);
     }
   }
 
