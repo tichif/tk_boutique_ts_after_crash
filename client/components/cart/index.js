@@ -12,6 +12,7 @@ import { getAmountInCurrency, addDecimal } from '../../utils/number';
 import { convertDate } from '../../utils/date';
 import { resetNotifications } from '../../redux/actions/currency';
 import { createOrderByAdminHandler } from '../../redux/actions/order';
+import { checkProductsAvailabilityHandler } from '../../redux/actions/product';
 import Loader from '../utilities/Loader';
 
 const index = () => {
@@ -37,13 +38,18 @@ const index = () => {
     orderId,
     success,
   } = useSelector((state) => state.orderCreateAdmin);
+  const {
+    loading: loadingProducts,
+    error: errorProducts,
+    success: successProducts,
+  } = useSelector((state) => state.productAvailability);
 
   useEffect(() => {
-    if (error || errorOrder) {
-      toast.error(error || errorOrder);
+    if (error || errorOrder || errorProducts) {
+      toast.error(error || errorOrder || errorProducts);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch, errorOrder]);
+  }, [error, dispatch, errorOrder, errorProducts]);
 
   useEffect(() => {
     if (errorCart) {
@@ -62,9 +68,17 @@ const index = () => {
     if (success) {
       clearCart();
       toast.success('Commande réussie !!!!');
+      dispatch(resetNotifications());
       setTimeout(() => router.push(`/orders/${orderId}`), 2000);
     }
-  }, [success]);
+  }, [success, dispatch]);
+
+  useEffect(() => {
+    if (successProducts) {
+      dispatch(resetNotifications());
+      router.push('/livraison');
+    }
+  }, [successProducts, router, dispatch]);
 
   function deleteHandler(key) {
     if (window.confirm('Etes vous sur(e) vouloir supprimer cet article ?')) {
@@ -83,7 +97,7 @@ const index = () => {
   );
 
   function checkoutHandler() {
-    console.log('Checkout');
+    dispatch(checkProductsAvailabilityHandler({ products: cart }));
   }
 
   function orderHandler() {
@@ -108,7 +122,7 @@ const index = () => {
     }
   }
 
-  if (loading) {
+  if (loading || loadingProducts) {
     return <Loader />;
   }
 
