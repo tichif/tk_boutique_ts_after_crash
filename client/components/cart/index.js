@@ -11,6 +11,8 @@ import Image from '../utilities/Image';
 import { getAmountInCurrency, addDecimal } from '../../utils/number';
 import { convertDate } from '../../utils/date';
 import { resetNotifications } from '../../redux/actions/currency';
+import { createOrderByAdminHandler } from '../../redux/actions/order';
+import Loader from '../utilities/Loader';
 
 const index = () => {
   const router = useRouter();
@@ -25,16 +27,23 @@ const index = () => {
     addToCart,
     removeToCart,
     clearError,
+    clearCart,
   } = useCart();
 
   const { currency, error } = useSelector((state) => state.currencyPrincipal);
+  const {
+    loading,
+    error: errorOrder,
+    orderId,
+    success,
+  } = useSelector((state) => state.orderCreateAdmin);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (error || errorOrder) {
+      toast.error(error || errorOrder);
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, errorOrder]);
 
   useEffect(() => {
     if (errorCart) {
@@ -48,6 +57,14 @@ const index = () => {
       addToCart(productId, variantId, qty);
     }
   }, [productId, variantId, qty]);
+
+  useEffect(() => {
+    if (success) {
+      clearCart();
+      toast.success('Commande réussie !!!!');
+      setTimeout(() => router.push(`/orders/${orderId}`), 2000);
+    }
+  }, [success]);
 
   function deleteHandler(key) {
     if (window.confirm('Etes vous sur(e) vouloir supprimer cet article ?')) {
@@ -70,7 +87,29 @@ const index = () => {
   }
 
   function orderHandler() {
-    console.log('Order handler');
+    if (
+      window.confirm(
+        'Etes vous sur(e) de vouloir passer cette commande au comptant ?'
+      )
+    ) {
+      const order = {
+        products: cart,
+        paymentMethod: 'au comptant',
+        transactionId: Date.now().toString(),
+        currency,
+        taxPrice: Number(addDecimal(Number((totalPrice * 0.1).toFixed(2)))),
+        shippingPrice: 0,
+        discountPrice: 0,
+        totalPrice: Number(
+          totalPrice + Number(addDecimal(Number((totalPrice * 0.1).toFixed(2))))
+        ),
+      };
+      dispatch(createOrderByAdminHandler(order));
+    }
+  }
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (
@@ -144,11 +183,11 @@ const index = () => {
               <ListGroup.Item>
                 <h4 style={{ fontSize: '1.1rem', padding: '0.5rem 0' }}>
                   HTG ({totalPrice.toFixed(2)}-{' '}
-                  {getAmountInCurrency(totalPrice, currency)})
+                  {currency && getAmountInCurrency(totalPrice, currency)})
                 </h4>
               </ListGroup.Item>
-              <ListGroup.Item>
-                {user && user.type !== 'admin' && (
+              {user && user.type !== 'admin' && (
+                <ListGroup.Item>
                   <Button
                     type='button'
                     className='btn-block'
@@ -157,11 +196,11 @@ const index = () => {
                   >
                     Commander
                   </Button>
-                )}
-              </ListGroup.Item>
+                </ListGroup.Item>
+              )}
               {/* Amin button */}
-              <ListGroup.Item>
-                {user && user.type === 'admin' && (
+              {user && user.type === 'admin' && (
+                <ListGroup.Item>
                   <Button
                     variant='success'
                     type='button'
@@ -171,8 +210,8 @@ const index = () => {
                   >
                     Payer
                   </Button>
-                )}
-              </ListGroup.Item>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>
