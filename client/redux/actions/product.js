@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 import {
+  PRODUCT_AVAILABILITY_FAILED,
+  PRODUCT_AVAILABILITY_REQUEST,
+  PRODUCT_AVAILABILITY_SUCCESS,
   PRODUCT_CAROUSEL_LIST_FAILED,
   PRODUCT_CAROUSEL_LIST_SUCCESS,
   PRODUCT_CREATE_FAILED,
@@ -564,6 +567,30 @@ export const getRelatedProductsHandler =
     } catch (error) {
       dispatch({
         type: PRODUCT_RELATED_LIST_FAILED,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  };
+
+// check products availability action
+export const checkProductsAvailabilityHandler =
+  (products) => async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_AVAILABILITY_REQUEST });
+
+      await axios.post(`${SERVER_API}/products/products-available`, products, {
+        withCredentials: true,
+      });
+
+      dispatch({
+        type: PRODUCT_AVAILABILITY_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_AVAILABILITY_FAILED,
         payload:
           error.response && error.response.data.error
             ? error.response.data.error

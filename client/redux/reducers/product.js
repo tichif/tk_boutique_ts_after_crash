@@ -1,4 +1,7 @@
 import {
+  PRODUCT_AVAILABILITY_FAILED,
+  PRODUCT_AVAILABILITY_REQUEST,
+  PRODUCT_AVAILABILITY_SUCCESS,
   PRODUCT_CAROUSEL_LIST_FAILED,
   PRODUCT_CAROUSEL_LIST_SUCCESS,
   PRODUCT_CREATE_FAILED,
@@ -421,6 +424,30 @@ export const productRelatedListReducer = (state = { products: [] }, action) => {
         products: action.payload,
       };
     case PRODUCT_RELATED_LIST_FAILED:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_NOTIFICATIONS:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// product availability
+export const productAvailabilityReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_AVAILABILITY_REQUEST:
+      return {
+        loading: true,
+      };
+    case PRODUCT_AVAILABILITY_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case PRODUCT_AVAILABILITY_FAILED:
       return {
         loading: false,
         error: action.payload,
