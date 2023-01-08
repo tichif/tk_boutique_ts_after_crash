@@ -4,6 +4,9 @@ import {
   ORDERS_LIST_FAILED,
   ORDERS_LIST_REQUEST,
   ORDERS_LIST_SUCCESS,
+  ORDER_CREATE_ADMIN_FAILED,
+  ORDER_CREATE_ADMIN_REQUEST,
+  ORDER_CREATE_ADMIN_SUCCESS,
   ORDER_DETAIL_FAILED,
   ORDER_DETAIL_REQUEST,
   ORDER_DETAIL_SUCCESS,
@@ -185,6 +188,33 @@ export const listAllOrdersForUserAdminHandler =
       });
     }
   };
+
+// update order status delivery action
+export const createOrderByAdminHandler = (order) => async (dispatch) => {
+  try {
+    dispatch({ type: ORDER_CREATE_ADMIN_REQUEST });
+
+    const { data } = await axios.post(`${SERVER_API}/orders/admin`, order, {
+      withCredentials: true,
+      headers: {
+        'Context-Type': 'application/json',
+      },
+    });
+
+    dispatch({
+      type: ORDER_CREATE_ADMIN_SUCCESS,
+      payload: data.data._id,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_CREATE_ADMIN_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
 
 export const resetNotifications = () => (dispatch) => {
   dispatch({
