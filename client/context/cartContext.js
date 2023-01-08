@@ -101,6 +101,7 @@ function CartContextProvider({ children }) {
         };
 
       case CLEAR_CART:
+        localStorage.removeItem('tk_cart');
         return {
           ...state,
           error: null,

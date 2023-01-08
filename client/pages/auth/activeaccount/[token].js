@@ -39,7 +39,7 @@ const ChildComponent = () => {
     success && (
       <Alert variant='success'>
         Compte activé avec succès.{' '}
-        <Link href='/se-connecter'>Click ici por vous connecter</Link>
+        <Link href='/se-connecter'>Cliquez ici pour vous connecter</Link>
       </Alert>
     )
   );
