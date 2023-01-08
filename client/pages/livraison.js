@@ -1,7 +1,12 @@
 import Layout from '../components/Layout';
+import Shipping from '../components/shipping';
 
 const Livraison = () => {
-  return <Layout>Livraison</Layout>;
+  return (
+    <Layout title='Livraison'>
+      <Shipping />
+    </Layout>
+  );
 };
 
 export default Livraison;
