@@ -9,6 +9,7 @@ import { pageView } from '../hooks/useGATracker';
 import { wrapper } from '../redux/store';
 import { MeContextProvider } from '../context/userContext';
 import { CartContextProvider } from '../context/cartContext';
+import { OrderContextProvider } from '../context/orderContext';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -31,7 +32,9 @@ function MyApp({ Component, pageProps }) {
     <>
       <MeContextProvider>
         <CartContextProvider>
-          <Component {...pageProps} />
+          <OrderContextProvider>
+            <Component {...pageProps} />
+          </OrderContextProvider>
         </CartContextProvider>
       </MeContextProvider>
       <ToastContainer />
