@@ -66,6 +66,8 @@ import {
   productAvailabilityReducer,
 } from './product';
 
+import { shippingDetailReducer } from './shipping';
+
 const reducers = combineReducers({
   contact: contactReducer,
   userRegister: userRegisterReducer,
@@ -114,6 +116,7 @@ const reducers = combineReducers({
   productPhotoDelete: productPhotoDeleteReducer,
   productRelatedList: productRelatedListReducer,
   productAvailability: productAvailabilityReducer,
+  shippingDetail: shippingDetailReducer,
 });
 
 export default reducers;
