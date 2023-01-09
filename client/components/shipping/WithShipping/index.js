@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { Formik, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage, Form as FormikForm } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 
 import Loader from '../../utilities/Loader';
