@@ -2,6 +2,7 @@ import {
   SHIPPING_DETAIL_FAILED,
   SHIPPING_DETAIL_REQUEST,
   SHIPPING_DETAIL_SUCCESS,
+  RESET_NOTIFICATIONS,
 } from '../constants/shipping';
 
 // shipping detail

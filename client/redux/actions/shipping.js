@@ -4,6 +4,7 @@ import {
   SHIPPING_DETAIL_FAILED,
   SHIPPING_DETAIL_REQUEST,
   SHIPPING_DETAIL_SUCCESS,
+  RESET_NOTIFICATIONS,
 } from '../constants/shipping';
 
 const SERVER_API = process.env.NEXT_PUBLIC_SERVER_API;
@@ -33,4 +34,11 @@ export const getShippingHandler = (address) => async (dispatch) => {
           : error.message,
     });
   }
+};
+
+// reset notification
+export const resetNotifications = () => (dispatch) => {
+  dispatch({
+    type: RESET_NOTIFICATIONS,
+  });
 };
