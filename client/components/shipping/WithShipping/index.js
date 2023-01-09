@@ -52,6 +52,10 @@ const WithShipping = () => {
 
   return (
     <>
+      <p>
+        Pour avoir le prix de livraison, entrez l'adresse de livraison dans le
+        formulaire suivant:
+      </p>
       <FormContainer>
         <Formik
           initialValues={shippingDefaultValues}
@@ -73,7 +77,7 @@ const WithShipping = () => {
                 <Form.Control
                   type='text'
                   placeholder="Entrez l'adresse de livraison"
-                  name='email'
+                  name='address'
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.address}
