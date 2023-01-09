@@ -1,11 +1,14 @@
 import Layout from '../components/Layout';
 import Shipping from '../components/shipping';
+import Auth from '../components/auth';
 
 const Livraison = () => {
   return (
-    <Layout title='Livraison'>
-      <Shipping />
-    </Layout>
+    <Auth>
+      <Layout title='Livraison'>
+        <Shipping />
+      </Layout>
+    </Auth>
   );
 };
 
