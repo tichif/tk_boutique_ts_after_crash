@@ -1,7 +1,24 @@
-import React from 'react';
+import { Button } from 'react-bootstrap';
+
+import { useOrder } from '../../../context/orderContext';
 
 const WithoutShipping = () => {
-  return <div>WithoutShipping</div>;
+  const { addShippingInfos } = useOrder();
+
+  function clickHandler() {
+    addShippingInfos({
+      address: 'N/A',
+      price: 0,
+    });
+  }
+
+  return (
+    <>
+      <Button variant='primary' onClick={clickHandler}>
+        Continuer
+      </Button>
+    </>
+  );
 };
 
 export default WithoutShipping;
