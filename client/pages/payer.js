@@ -5,7 +5,7 @@ import Auth from '../components/auth';
 const Livraison = () => {
   return (
     <Auth>
-      <Layout title='Livraison'>
+      <Layout title='Payer'>
         <Payment />
       </Layout>
     </Auth>
