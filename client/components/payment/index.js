@@ -14,7 +14,7 @@ import {
   resetNotifications,
   getPrincipalCurrencyHandler,
 } from '../../redux/actions/currency';
-import { convertDate } from '../../utils/date';
+import { convertMultipleWords } from '../../utils/string';
 import { getAmountInCurrency, addDecimal } from '../../utils/number';
 
 const index = () => {
@@ -102,7 +102,7 @@ const index = () => {
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Mode de paiement</h2>
-              <strong>Mode:</strong> {paymentInfos}
+              <strong>Mode:</strong> {convertMultipleWords(paymentInfos)}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Articles</h2>
