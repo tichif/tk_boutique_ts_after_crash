@@ -57,6 +57,32 @@ const index = () => {
     dispatch(getPrincipalCurrencyHandler());
   }, [dispatch]);
 
+  const cartPrice = useMemo(
+    () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
+    [cart]
+  );
+  const shippingPrice = Number(shippingInfos.price);
+  const taxPrice = useMemo(() => cartPrice * 0.1, [cartPrice]);
+  const discountPrice = useMemo(
+    () =>
+      cartPrice < 3000
+        ? 0
+        : cartPrice >= 3000 && cartPrice < 5000
+        ? cartPrice * 0.1
+        : cartPrice * 0.2,
+    [cart]
+  );
+  const totalPrice = useMemo(
+    () => cartPrice + shippingPrice + taxPrice - discountPrice,
+    [cartPrice, shippingPrice, taxPrice, discountPrice]
+  );
+  const discountPercentage =
+    cartPrice < 3000
+      ? '0%'
+      : cartPrice >= 3000 && cartPrice < 5000
+      ? '10%'
+      : '20%';
+
   if (loading) {
     return <Loader />;
   }
@@ -70,7 +96,7 @@ const index = () => {
             <ListGroup.Item>
               <h2>Livraison</h2>
               <p>
-                <strong>Addresse:</strong>
+                <strong>Addresse: </strong>
                 {shippingInfos.address}
               </p>
             </ListGroup.Item>
@@ -92,7 +118,7 @@ const index = () => {
                           height={product.height / 20}
                         />
                       </Col>
-                      <Col>
+                      <Col className='ml-5'>
                         <Link href={`/article/${product.slug}`}>
                           {product.name}
                         </Link>
@@ -113,7 +139,60 @@ const index = () => {
             </ListGroup.Item>
           </ListGroup>
         </Col>
-        <Col md={4}></Col>
+        <Col md={4}>
+          <Card>
+            <ListGroup variant='flush'>
+              <ListGroup.Item>
+                <h2 style={{ textAlign: 'center' }}>Résumé</h2>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Articles</Col>
+                  <Col>
+                    HTG {addDecimal(cartPrice)} /{' '}
+                    {currency && getAmountInCurrency(cartPrice, currency)}{' '}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Livraison</Col>
+                  <Col>
+                    HTG {addDecimal(shippingPrice)} /{' '}
+                    {currency && getAmountInCurrency(shippingPrice, currency)}{' '}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Taxe</Col>
+                  <Col>
+                    HTG {addDecimal(taxPrice)} /{' '}
+                    {currency && getAmountInCurrency(taxPrice, currency)}{' '}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Rabais: {discountPercentage}</Col>
+                  <Col>
+                    HTG {addDecimal(discountPrice)} /{' '}
+                    {currency && getAmountInCurrency(discountPrice, currency)}{' '}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Total</Col>
+                  <Col>
+                    HTG {addDecimal(totalPrice)} /{' '}
+                    {currency && getAmountInCurrency(totalPrice, currency)}{' '}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            </ListGroup>
+          </Card>
+        </Col>
       </Row>
     </>
   );
