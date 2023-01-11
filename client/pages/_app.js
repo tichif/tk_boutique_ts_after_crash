@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 import '../styles/globals.css';
 import '../styles/bootstrap.min.css';
@@ -10,6 +12,8 @@ import { wrapper } from '../redux/store';
 import { MeContextProvider } from '../context/userContext';
 import { CartContextProvider } from '../context/cartContext';
 import { OrderContextProvider } from '../context/orderContext';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_CLIENT);
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -33,7 +37,9 @@ function MyApp({ Component, pageProps }) {
       <MeContextProvider>
         <CartContextProvider>
           <OrderContextProvider>
-            <Component {...pageProps} />
+            <Elements stripe={stripePromise}>
+              <Component {...pageProps} />
+            </Elements>
           </OrderContextProvider>
         </CartContextProvider>
       </MeContextProvider>
