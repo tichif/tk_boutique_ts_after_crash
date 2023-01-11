@@ -39,8 +39,8 @@ const WithShipping = () => {
       addShippingInfos({
         address,
         price: infos.price,
-        latitude: infos.latitude,
-        longitude: infos.longitude,
+        lat: infos.latitude,
+        lng: infos.longitude,
       });
       router.push('/methode-paiement');
     }

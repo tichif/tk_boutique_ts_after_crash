@@ -114,6 +114,8 @@ const index = () => {
   // success
   useEffect(() => {
     if (success) {
+      clearInfos();
+      clearCart();
       router.push(`/orders/${orderId}`);
     }
   }, [success, router, orderId]);
@@ -137,10 +139,22 @@ const index = () => {
         transactionId === infos.transactionId &&
         totalPrice === Number(infos.amount)
       ) {
-        dispatch();
+        dispatch(
+          createOrderHandler({
+            currency,
+            products: cart,
+            paymentMethod: paymentInfos,
+            transactionId,
+            taxPrice,
+            shippingPrice,
+            discountPrice,
+            totalPrice,
+            shippingAddress: shippingInfos,
+          })
+        );
       }
     }
-  }, []);
+  }, [infos, dispatch]);
 
   const cartPrice = useMemo(
     () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
@@ -168,7 +182,21 @@ const index = () => {
       ? '10%'
       : '20%';
 
-  if (loading) {
+  // moncash handler
+  function payWithMoncashHandler() {
+    dispatch(processMoncashPaymentHandler(totalPrice));
+  }
+
+  // stripe handler
+  function payWithStripeHandler() {}
+
+  if (
+    loading ||
+    loadingMoncashCreate ||
+    loadingMoncashDetail ||
+    loadingStripe ||
+    loadingCreate
+  ) {
     return <Loader />;
   }
 
@@ -275,6 +303,20 @@ const index = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
+              {paymentInfos && paymentInfos === 'moncash' && (
+                <ListGroup.Item>
+                  <Button className='btn-block' onClick={payWithMoncashHandler}>
+                    Payer avec Moncash
+                  </Button>
+                </ListGroup.Item>
+              )}
+              {paymentInfos && paymentInfos === 'stripe' && (
+                <ListGroup.Item>
+                  <Button className='btn-block' onClick={payWithStripeHandler}>
+                    Payer
+                  </Button>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>
