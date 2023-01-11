@@ -123,7 +123,14 @@ const index = () => {
   // currency
   useEffect(() => {
     dispatch(getPrincipalCurrencyHandler());
-  }, [dispatch]);
+  }, [
+    error,
+    dispatch,
+    errorMoncashCreate,
+    errorCreate,
+    errorMoncashDetail,
+    errorStripe,
+  ]);
 
   // transactionId
   useEffect(() => {
@@ -137,21 +144,24 @@ const index = () => {
     if (infos) {
       if (
         transactionId === infos.transactionId &&
-        totalPrice === Number(infos.amount)
+        Math.round(totalPrice) === Number(infos.amount)
       ) {
-        dispatch(
-          createOrderHandler({
-            currency,
-            products: cart,
-            paymentMethod: paymentInfos,
-            transactionId,
-            taxPrice,
-            shippingPrice,
-            discountPrice,
-            totalPrice,
-            shippingAddress: shippingInfos,
-          })
-        );
+        const order = {
+          currency,
+          products: cart,
+          paymentMethod: paymentInfos,
+          transactionId,
+          taxPrice,
+          shippingPrice,
+          discountPrice,
+          totalPrice,
+        };
+
+        if (shippingInfos.lat) {
+          order.shippingAddress = shippingInfos;
+        }
+
+        dispatch(createOrderHandler(order));
       }
     }
   }, [infos, dispatch]);
@@ -184,7 +194,7 @@ const index = () => {
 
   // moncash handler
   function payWithMoncashHandler() {
-    dispatch(processMoncashPaymentHandler(totalPrice));
+    dispatch(processMoncashPaymentHandler(Math.round(totalPrice)));
   }
 
   // stripe handler
@@ -303,9 +313,19 @@ const index = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-              {paymentInfos && paymentInfos === 'moncash' && (
+              {!url && paymentInfos && paymentInfos === 'moncash' && (
                 <ListGroup.Item>
-                  <Button className='btn-block' onClick={payWithMoncashHandler}>
+                  <Button
+                    className='btn-block'
+                    onClick={payWithMoncashHandler}
+                    disabled={
+                      loading ||
+                      loadingMoncashCreate ||
+                      loadingMoncashDetail ||
+                      loadingStripe ||
+                      loadingCreate
+                    }
+                  >
                     Payer avec Moncash
                   </Button>
                 </ListGroup.Item>

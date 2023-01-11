@@ -4,6 +4,9 @@ import {
   MONCASH_CREATE_FAILED,
   MONCASH_CREATE_REQUEST,
   MONCASH_CREATE_SUCCESS,
+  MONCASH_DETAIL_FAILED,
+  MONCASH_DETAIL_REQUEST,
+  MONCASH_DETAIL_SUCCESS,
   RESET_NOTIFICATIONS,
 } from '../constants/moncash';
 
@@ -43,7 +46,7 @@ export const processMoncashPaymentHandler = (amount) => async (dispatch) => {
 // get moncash infos action
 export const getMoncashInfosHandler = (transactionId) => async (dispatch) => {
   try {
-    dispatch({ type: MONCASH_CREATE_REQUEST });
+    dispatch({ type: MONCASH_DETAIL_REQUEST });
 
     const { data } = await axios.get(`${SERVER_API}/moncash/${transactionId}`, {
       withCredentials: true,
@@ -53,12 +56,12 @@ export const getMoncashInfosHandler = (transactionId) => async (dispatch) => {
     });
 
     dispatch({
-      type: MONCASH_CREATE_SUCCESS,
+      type: MONCASH_DETAIL_SUCCESS,
       payload: data.data,
     });
   } catch (error) {
     dispatch({
-      type: MONCASH_CREATE_FAILED,
+      type: MONCASH_DETAIL_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error
