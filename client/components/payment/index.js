@@ -166,24 +166,32 @@ const index = () => {
     }
   }, [infos, dispatch]);
 
-  const cartPrice = useMemo(
-    () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
-    [cart]
+  const cartPrice = Math.round(
+    useMemo(
+      () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
+      [cart]
+    )
   );
-  const shippingPrice = Number(shippingInfos.price);
-  const taxPrice = useMemo(() => cartPrice * 0.1, [cartPrice]);
-  const discountPrice = useMemo(
-    () =>
-      cartPrice < 3000
-        ? 0
-        : cartPrice >= 3000 && cartPrice < 5000
-        ? cartPrice * 0.1
-        : cartPrice * 0.2,
-    [cart]
+  const shippingPrice = Math.round(
+    Number(shippingInfos && shippingInfos.price)
   );
-  const totalPrice = useMemo(
-    () => cartPrice + shippingPrice + taxPrice - discountPrice,
-    [cartPrice, shippingPrice, taxPrice, discountPrice]
+  const taxPrice = Math.round(useMemo(() => cartPrice * 0.1, [cartPrice]));
+  const discountPrice = Math.round(
+    useMemo(
+      () =>
+        cartPrice < 3000
+          ? 0
+          : cartPrice >= 3000 && cartPrice < 5000
+          ? cartPrice * 0.1
+          : cartPrice * 0.2,
+      [cart]
+    )
+  );
+  const totalPrice = Math.round(
+    useMemo(
+      () => cartPrice + shippingPrice + taxPrice - discountPrice,
+      [cartPrice, shippingPrice, taxPrice, discountPrice]
+    )
   );
   const discountPercentage =
     cartPrice < 3000
@@ -220,12 +228,13 @@ const index = () => {
               <h2>Livraison</h2>
               <p>
                 <strong>Addresse: </strong>
-                {shippingInfos.address}
+                {shippingInfos && shippingInfos.address}
               </p>
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Mode de paiement</h2>
-              <strong>Mode:</strong> {convertMultipleWords(paymentInfos)}
+              <strong>Mode:</strong>{' '}
+              {paymentInfos && convertMultipleWords(paymentInfos)}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Articles</h2>
