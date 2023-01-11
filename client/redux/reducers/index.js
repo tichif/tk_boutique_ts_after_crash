@@ -26,6 +26,7 @@ import {
   orderDetailReducer,
   orderUpdateStatusReducer,
   orderCreateAdminReducer,
+  orderCreateReducer,
 } from './order';
 
 import {
@@ -68,6 +69,8 @@ import {
 
 import { shippingDetailReducer } from './shipping';
 
+import { moncashCreateReducer } from './moncash';
+
 const reducers = combineReducers({
   contact: contactReducer,
   userRegister: userRegisterReducer,
@@ -87,6 +90,7 @@ const reducers = combineReducers({
   orderDetail: orderDetailReducer,
   orderUpdateStatus: orderUpdateStatusReducer,
   orderCreateAdmin: orderCreateAdminReducer,
+  orderCreate: orderCreateReducer,
   currencyList: currencyListReducer,
   currencyCreate: currencyCreateReducer,
   currencyDelete: currencyDeleteReducer,
@@ -117,6 +121,7 @@ const reducers = combineReducers({
   productRelatedList: productRelatedListReducer,
   productAvailability: productAvailabilityReducer,
   shippingDetail: shippingDetailReducer,
+  moncashCreate: moncashCreateReducer,
 });
 
 export default reducers;
