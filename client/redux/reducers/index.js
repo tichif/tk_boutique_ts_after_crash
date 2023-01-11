@@ -71,6 +71,8 @@ import { shippingDetailReducer } from './shipping';
 
 import { moncashCreateReducer, moncashDetailReducer } from './moncash';
 
+import { stripeIntentReducer } from './stripe';
+
 const reducers = combineReducers({
   contact: contactReducer,
   userRegister: userRegisterReducer,
@@ -123,6 +125,7 @@ const reducers = combineReducers({
   shippingDetail: shippingDetailReducer,
   moncashCreate: moncashCreateReducer,
   moncashDetail: moncashDetailReducer,
+  stripeIntent: stripeIntentReducer,
 });
 
 export default reducers;
