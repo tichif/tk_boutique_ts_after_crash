@@ -16,14 +16,44 @@ import {
 } from '../../redux/actions/currency';
 import { convertMultipleWords } from '../../utils/string';
 import { getAmountInCurrency, addDecimal } from '../../utils/number';
+import {
+  getMoncashInfosHandler,
+  processMoncashPaymentHandler,
+} from '../../redux/actions/moncash';
+import { getStripeIntentHandler } from '../../redux/actions/stripe';
+import { createOrderHandler } from '../../redux/actions/order';
 
 const index = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const { transactionId } = router.query;
+
   const { loading, error, currency } = useSelector(
     (state) => state.currencyPrincipal
   );
+
+  const {
+    loading: loadingMoncashCreate,
+    error: errorMoncashCreate,
+    url,
+  } = useSelector((state) => state.moncashCreate);
+  const {
+    loading: loadingMoncashDetail,
+    error: errorMoncashDetail,
+    infos,
+  } = useSelector((state) => state.moncashDetail);
+  const {
+    loading: loadingStripe,
+    error: errorStripe,
+    clientSecret,
+  } = useSelector((state) => state.stripeIntent);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success,
+    orderId,
+  } = useSelector((state) => state.orderCreate);
 
   const {
     state: { cart },
@@ -34,13 +64,34 @@ const index = () => {
     clearInfos,
   } = useOrder();
 
+  // error
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (
+      error ||
+      errorMoncashCreate ||
+      errorMoncashDetail ||
+      errorStripe ||
+      errorCreate
+    ) {
+      toast.error(
+        error ||
+          errorMoncashCreate ||
+          errorMoncashDetail ||
+          errorStripe ||
+          errorCreate
+      );
       dispatch(resetNotifications());
     }
-  }, [error, dispatch]);
+  }, [
+    error,
+    dispatch,
+    errorMoncashCreate,
+    errorCreate,
+    errorMoncashDetail,
+    errorStripe,
+  ]);
 
+  // check cart and shipping infos
   useEffect(() => {
     if (!cart) {
       router.push('/panier');
@@ -53,9 +104,43 @@ const index = () => {
     }
   }, [paymentInfos, shippingInfos, cart]);
 
+  // url
+  useEffect(() => {
+    if (url) {
+      window.location.href = url;
+    }
+  }, [url]);
+
+  // success
+  useEffect(() => {
+    if (success) {
+      router.push(`/orders/${orderId}`);
+    }
+  }, [success, router, orderId]);
+
+  // currency
   useEffect(() => {
     dispatch(getPrincipalCurrencyHandler());
   }, [dispatch]);
+
+  // transactionId
+  useEffect(() => {
+    if (transactionId) {
+      dispatch(getMoncashInfosHandler(transactionId));
+    }
+  }, [transactionId, dispatch]);
+
+  // if moncash infos is ok
+  useEffect(() => {
+    if (infos) {
+      if (
+        transactionId === infos.transactionId &&
+        totalPrice === Number(infos.amount)
+      ) {
+        dispatch();
+      }
+    }
+  }, []);
 
   const cartPrice = useMemo(
     () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
