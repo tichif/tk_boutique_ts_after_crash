@@ -40,6 +40,33 @@ export const processMoncashPaymentHandler = (amount) => async (dispatch) => {
   }
 };
 
+// get moncash infos action
+export const getMoncashInfosHandler = (transactionId) => async (dispatch) => {
+  try {
+    dispatch({ type: MONCASH_CREATE_REQUEST });
+
+    const { data } = await axios.get(`${SERVER_API}/moncash/${transactionId}`, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    dispatch({
+      type: MONCASH_CREATE_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: MONCASH_CREATE_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
 // reset notification
 export const resetNotifications = () => (dispatch) => {
   dispatch({

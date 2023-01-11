@@ -69,7 +69,7 @@ import {
 
 import { shippingDetailReducer } from './shipping';
 
-import { moncashCreateReducer } from './moncash';
+import { moncashCreateReducer, moncashDetailReducer } from './moncash';
 
 const reducers = combineReducers({
   contact: contactReducer,
@@ -122,6 +122,7 @@ const reducers = combineReducers({
   productAvailability: productAvailabilityReducer,
   shippingDetail: shippingDetailReducer,
   moncashCreate: moncashCreateReducer,
+  moncashDetail: moncashDetailReducer,
 });
 
 export default reducers;
