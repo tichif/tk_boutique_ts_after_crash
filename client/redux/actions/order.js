@@ -7,6 +7,9 @@ import {
   ORDER_CREATE_ADMIN_FAILED,
   ORDER_CREATE_ADMIN_REQUEST,
   ORDER_CREATE_ADMIN_SUCCESS,
+  ORDER_CREATE_FAILED,
+  ORDER_CREATE_REQUEST,
+  ORDER_CREATE_SUCCESS,
   ORDER_DETAIL_FAILED,
   ORDER_DETAIL_REQUEST,
   ORDER_DETAIL_SUCCESS,
@@ -208,6 +211,33 @@ export const createOrderByAdminHandler = (order) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_ADMIN_FAILED,
+      payload:
+        error.response && error.response.data.error
+          ? error.response.data.error
+          : error.message,
+    });
+  }
+};
+
+// create order action
+export const createOrderHandler = (order) => async (dispatch) => {
+  try {
+    dispatch({ type: ORDER_CREATE_REQUEST });
+
+    const { data } = await axios.post(`${SERVER_API}/orders`, order, {
+      withCredentials: true,
+      headers: {
+        'Context-Type': 'application/json',
+      },
+    });
+
+    dispatch({
+      type: ORDER_CREATE_SUCCESS,
+      payload: data.data._id,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_CREATE_FAILED,
       payload:
         error.response && error.response.data.error
           ? error.response.data.error
