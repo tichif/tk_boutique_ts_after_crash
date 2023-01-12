@@ -242,10 +242,12 @@ const ProductDetail = () => {
                     <Row>
                       <Col>Status</Col>
                       <Col>
-                        {qty > 0 ? (
-                          <span>Disponible</span>
-                        ) : (
+                        {qty === 0 ? (
                           <span className='text-danger'>Non Disponible</span>
+                        ) : qty <= 3 ? (
+                          <span className='text-warning'>Presque ecoule</span>
+                        ) : (
+                          <span>Disponible</span>
                         )}
                       </Col>
                     </Row>
