@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import FormContainer from '../../utilities/FormContainer';
 import { useOrder } from '../../../context/orderContext';
 import CheckoutSteps from '../../utilities/CheckoutSteps';
+import { useCart } from '../../../context/cartContext';
 
 const PaymentMethod = () => {
   const {
@@ -13,15 +14,19 @@ const PaymentMethod = () => {
     addPaymentInfos,
   } = useOrder();
 
+  const { cart } = useCart();
+
   const router = useRouter();
 
   const [paymentMethod, setPaymentMethod] = useState('');
 
   useEffect(() => {
-    if (!shippingInfos) {
+    if (!cart) {
+      router.push('/panier');
+    } else if (!shippingInfos) {
       router.push('/livraison');
     }
-  }, [shippingInfos, router]);
+  }, [shippingInfos, router, cart]);
 
   function submitHandler(e) {
     e.preventDefault();
