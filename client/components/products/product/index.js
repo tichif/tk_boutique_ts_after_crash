@@ -26,10 +26,12 @@ const Product = ({ product, currency }) => {
           )}
         </Card.Text>
         <Card.Text as='h6'>
-          {(product && product.qty > 0) || product.variant[0]?.qty ? (
-            <p>Disponible</p>
-          ) : (
+          {(product && product.qty === 0) || product.variant[0]?.qty === 0 ? (
             <p className='text-danger'>Non Disponible</p>
+          ) : (product && product.qty <= 3) || product.variant[0]?.qty <= 3 ? (
+            <p className='text-warning'>Presque ecoule</p>
+          ) : (
+            <p>Disponible</p>
           )}
         </Card.Text>
       </Card.Body>
