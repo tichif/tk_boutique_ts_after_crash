@@ -35,7 +35,7 @@ const LoginForm = () => {
     if (success) {
       dispatch(resetNotifications());
       refetchUser();
-      router.push('/profil');
+      window.location.href = '/profil';
     }
   }, [error, success, dispatch]);
 
