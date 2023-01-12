@@ -1,9 +1,10 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { Button, Row, Col, ListGroup, Card } from 'react-bootstrap';
+import { Button, Row, Col, ListGroup, Card, Form } from 'react-bootstrap';
 import Link from 'next/link';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 import Loader from '../utilities/Loader';
 import CheckoutSteps from '../utilities/CheckoutSteps';
@@ -26,6 +27,12 @@ import { createOrderHandler } from '../../redux/actions/order';
 const index = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const elements = useElements();
+  const stripe = useStripe();
+
+  const [card, setCard] = useState();
+  const [clearForm, setClearForm] = useState(false);
 
   const { transactionId } = router.query;
 
@@ -102,7 +109,7 @@ const index = () => {
     } else if (!paymentInfos) {
       router.push('/methode-paiement');
     }
-  }, [paymentInfos, shippingInfos, cart]);
+  }, []);
 
   // url
   useEffect(() => {
@@ -166,6 +173,15 @@ const index = () => {
     }
   }, [infos, dispatch]);
 
+  // stripe client secret
+  useEffect(() => {
+    console.log('entre nan stripe');
+    if (clientSecret) {
+      console.log(clientSecret);
+      payWithStripe(clientSecret);
+    }
+  }, [clientSecret]);
+
   const cartPrice = Math.round(
     useMemo(
       () => cart.reduce((acc, item) => acc + item.qty * item.price, 0),
@@ -206,13 +222,55 @@ const index = () => {
   }
 
   // stripe handler
-  function payWithStripeHandler() {}
+  function submitHandler(e) {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      toast.error("Veuillez réessayer s'il vous plait");
+      return;
+    }
+
+    const cardElement = elements.getElement(CardElement);
+    setCard(cardElement);
+    dispatch(getStripeIntentHandler(Math.round(totalPrice / currency.amount)));
+  }
+
+  async function payWithStripe(token) {
+    const { paymentIntent, error } = await stripe.confirmCardPayment(token, {
+      payment_method: {
+        card: card,
+      },
+    });
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    setClearForm(true);
+
+    const order = {
+      currency,
+      products: cart,
+      paymentMethod: paymentInfos,
+      transactionId: paymentIntent.id,
+      taxPrice,
+      shippingPrice,
+      discountPrice,
+      totalPrice,
+    };
+
+    if (shippingInfos.lat) {
+      order.shippingAddress = shippingInfos;
+    }
+
+    dispatch(createOrderHandler(order));
+  }
 
   if (
     loading ||
     loadingMoncashCreate ||
     loadingMoncashDetail ||
-    loadingStripe ||
     loadingCreate
   ) {
     return <Loader />;
@@ -339,11 +397,18 @@ const index = () => {
                   </Button>
                 </ListGroup.Item>
               )}
-              {paymentInfos && paymentInfos === 'stripe' && (
+              {paymentInfos && paymentInfos === 'stripe' && !clearForm && (
                 <ListGroup.Item>
-                  <Button className='btn-block' onClick={payWithStripeHandler}>
-                    Payer
-                  </Button>
+                  <Form id='payment-form' onSubmit={submitHandler}>
+                    <CardElement id='card-element' />
+                    <Button
+                      type='submit'
+                      className='btn-block mt-4'
+                      disabled={!stripe || loadingStripe}
+                    >
+                      Payer
+                    </Button>
+                  </Form>
                 </ListGroup.Item>
               )}
             </ListGroup>
