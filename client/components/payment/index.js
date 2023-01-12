@@ -109,7 +109,7 @@ const index = () => {
     } else if (!paymentInfos) {
       router.push('/methode-paiement');
     }
-  }, [cart, shippingInfos, paymentInfos]);
+  }, []);
 
   // url
   useEffect(() => {
