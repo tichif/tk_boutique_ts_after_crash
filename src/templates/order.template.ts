@@ -9,7 +9,11 @@ export function orderUser(order: OrderDocument): string {
         <p>Voici les informations concernant votre commande:</p>
         <ul>
           <li>Numéro de commande: ${order._id}</li>
-          <li>Date: ${new Date(order.createdAt).toLocaleDateString()}</li>
+          <li>Date: ${new Date(order.createdAt).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}</li>
           <li>Mode de paiement: ${order.paymentMethod}</li>
           <li>Montant de la taxe: ${order.taxPrice} HTG / ${
     order.currency.symbol
@@ -60,7 +64,11 @@ export function orderForAdmin(order: OrderDocument): string {
     }:</p>
     <ul>
       <li>Numéro de commande: ${order._id}</li>
-      <li>Date: ${new Date(order.createdAt).toLocaleDateString()}</li>
+      <li>Date: ${new Date(order.createdAt).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })}</li>
       <li>Mode de paiement: ${order.paymentMethod}</li>
       <li>Montant de la taxe: ${order.taxPrice} HTG / ${
     order.currency.symbol
@@ -109,7 +117,11 @@ export function orderCreatedByAdmin(order: OrderDocument): string {
     <p>Voici les informations concernant de la commande que vous venez de passer:</p>
     <ul>
       <li>Numéro de commande: ${order._id}</li>
-      <li>Date: ${new Date(order.createdAt).toLocaleDateString()}</li>
+      <li>Date: ${new Date(order.createdAt).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })}</li>
       <li>Mode de paiement: ${order.paymentMethod}</li>
       <li>Montant de la taxe: ${order.taxPrice} HTG / ${
     order.currency.symbol
@@ -157,11 +169,21 @@ export function updateOrderDelivery(order: OrderDocument): string {
     message = `<p>Par ce message, nous vous notifions que votre commande a été livré à ${
       order.shippingAddress.address
     }, le ${
-      order.deliveryAt && new Date(order.deliveryAt).toLocaleDateString()
+      order.deliveryAt &&
+      new Date(order.deliveryAt).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
     } </p>`;
   } else {
     message = `<p>Par ce message, nous vous notifions que vous avez reçu votre commande le ${
-      order.deliveryAt && new Date(order.deliveryAt).toLocaleDateString()
+      order.deliveryAt &&
+      new Date(order.deliveryAt).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
     } </p>`;
   }
   return `
@@ -183,13 +205,23 @@ export function updateOrderDeliveryAdmin(order: OrderDocument): string {
     message = `<p>Par ce message, nous vous notifions que la commande de ${
       order.user.name
     } a été livré à ${order.shippingAddress.address}, le ${
-      order.deliveryAt && new Date(order.deliveryAt).toLocaleDateString()
+      order.deliveryAt &&
+      new Date(order.deliveryAt).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
     } </p>`;
   } else {
     message = `<p>Par ce message, nous vous notifions que ${
       order.user.name
     } a reçu sa commande le ${
-      order.deliveryAt && new Date(order.deliveryAt).toLocaleDateString()
+      order.deliveryAt &&
+      new Date(order.deliveryAt).toLocaleDateString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
     } </p>`;
   }
   return `
