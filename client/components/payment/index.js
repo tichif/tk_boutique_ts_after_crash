@@ -109,7 +109,7 @@ const index = () => {
     } else if (!paymentInfos) {
       router.push('/methode-paiement');
     }
-  }, []);
+  }, [cart, shippingInfos, paymentInfos]);
 
   // url
   useEffect(() => {
@@ -175,7 +175,6 @@ const index = () => {
 
   // stripe client secret
   useEffect(() => {
-    console.log('entre nan stripe');
     if (clientSecret) {
       console.log(clientSecret);
       payWithStripe(clientSecret);
@@ -281,6 +280,9 @@ const index = () => {
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
+          <Link href='/methode-paiement' className='btn btn-light mb-3'>
+            <i className='fas fa-arrow-left'></i> Retour
+          </Link>
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>Livraison</h2>

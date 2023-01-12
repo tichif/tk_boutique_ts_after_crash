@@ -33,7 +33,7 @@ function OrderContextProvider({ children }) {
         localStorage.setItem('tk_paymentInfos', JSON.stringify(action.payload));
         return {
           ...state,
-          shippingInfos: action.payload,
+          paymentInfos: action.payload,
         };
       case CLEAR_ORDER_INFOS:
         localStorage.removeItem('tk_paymentInfos');
