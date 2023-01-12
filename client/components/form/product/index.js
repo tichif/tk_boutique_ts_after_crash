@@ -106,10 +106,33 @@ const ProductForm = () => {
         validationSchema={productSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
+          const productData = {
+            name: values.name,
+            category: values.category,
+            description: values.description,
+            photoPrincipal: values.photoPrincipal,
+          };
+
+          if (values.price) {
+            productData.price = values.price;
+          }
+
+          if (values.qty) {
+            productData.qty = values.qty;
+          }
+
+          if (values.size) {
+            productData.size = values.size;
+          }
+
+          if (values.color) {
+            productData.color = values.color;
+          }
+
           if (product) {
-            dispatch(updateProductHandler(id, values));
+            dispatch(updateProductHandler(id, productData));
           } else {
-            dispatch(createProductHandler(values));
+            dispatch(createProductHandler(productData));
           }
           setSubmitting(false);
           if (success || successUpdate) {
